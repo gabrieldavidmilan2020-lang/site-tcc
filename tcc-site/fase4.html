@@ -1,0 +1,2789 @@
+```html
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>O Mundo Sem Estilo - Fase 4</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            margin: 0;
+
+            overflow: hidden;
+
+            font-family: Arial, sans-serif;
+
+            background: #050914;
+
+            color: white;
+
+        }
+
+
+        /* =====================================================
+           JOGO
+        ===================================================== */
+
+        #game {
+
+            width: 100vw;
+
+            height: 100vh;
+
+            overflow: hidden;
+
+            position: relative;
+
+            background: #050914;
+
+        }
+
+
+        /* =====================================================
+           MUNDO
+           
+           >>> AQUI VOCÊ COLOCA O SEU BACKGROUND <<<
+           
+           Coloque um arquivo chamado:
+           
+           background.png
+           
+           na mesma pasta do index.html.
+           
+           Se não quiser usar imagem, deixe como está.
+        ===================================================== */
+
+        #world {
+
+            position: absolute;
+
+            width: 2600px;
+
+            height: 1600px;
+
+            left: 0;
+
+            top: 0;
+
+            background-color: #07101c;
+
+            /*
+            =================================================
+            PARA COLOCAR SEU FUNDO:
+
+            background-image:
+                url("background.png");
+
+            background-size:
+                cover;
+
+            background-position:
+                center;
+
+            =================================================
+            */
+
+            background-image:
+                url("background.png");
+
+            background-size: cover;
+
+            background-position: center;
+
+        }
+
+
+        /* =====================================================
+           EFEITO TECNOLÓGICO SOBRE O FUNDO
+        ===================================================== */
+
+        #world::before {
+
+            content: "";
+
+            position: absolute;
+
+            inset: 0;
+
+            pointer-events: none;
+
+            background:
+                linear-gradient(
+                    rgba(0, 220, 255, 0.04) 1px,
+                    transparent 1px
+                ),
+                linear-gradient(
+                    90deg,
+                    rgba(0, 220, 255, 0.04) 1px,
+                    transparent 1px
+                );
+
+            background-size:
+                50px 50px;
+
+        }
+
+
+        /* =====================================================
+           ESTRADAS
+        ===================================================== */
+
+        .road {
+
+            position: absolute;
+
+            background:
+                rgba(5, 20, 35, .88);
+
+            border-top:
+                3px solid #00eaff;
+
+            border-bottom:
+                3px solid #00eaff;
+
+            box-shadow:
+                0 0 25px
+                rgba(0, 234, 255, .25);
+
+        }
+
+
+        .road.horizontal {
+
+            width: 2600px;
+
+            height: 150px;
+
+            top: 700px;
+
+            left: 0;
+
+        }
+
+
+        .road.vertical {
+
+            width: 150px;
+
+            height: 1600px;
+
+            top: 0;
+
+            left: 1225px;
+
+            border-left:
+                3px solid #00eaff;
+
+            border-right:
+                3px solid #00eaff;
+
+            border-top: none;
+
+            border-bottom: none;
+
+        }
+
+
+        /* =====================================================
+           TERMINAIS
+        ===================================================== */
+
+        .sign {
+
+            position: absolute;
+
+            width: 300px;
+
+            min-height: 170px;
+
+            padding: 20px;
+
+            background:
+                rgba(5, 15, 28, .96);
+
+            border:
+                2px solid #00eaff;
+
+            color: white;
+
+            text-align: center;
+
+            box-shadow:
+                0 0 18px
+                rgba(0, 234, 255, .4);
+
+            cursor: pointer;
+
+            transition: .2s;
+
+        }
+
+
+        .sign:hover {
+
+            transform: scale(1.04);
+
+            box-shadow:
+                0 0 30px
+                rgba(0, 234, 255, .8);
+
+        }
+
+
+        .sign.completed {
+
+            border-color:
+                #63ff7a;
+
+            box-shadow:
+                0 0 30px
+                rgba(99, 255, 122, .65);
+
+        }
+
+
+        .sign.completed::after {
+
+            content:
+                "✓ CONCLUÍDO";
+
+            display: block;
+
+            margin-top: 10px;
+
+            color:
+                #63ff7a;
+
+            font-weight: bold;
+
+        }
+
+
+        .sign h1 {
+
+            margin: 5px 0 15px;
+
+            font-size: 28px;
+
+        }
+
+
+        .sign p {
+
+            margin: 0;
+
+            color:
+                #a9c8d8;
+
+        }
+
+
+        #challenge1 {
+
+            left: 280px;
+
+            top: 430px;
+
+        }
+
+
+        #challenge2 {
+
+            left: 1450px;
+
+            top: 400px;
+
+        }
+
+
+        #challenge3 {
+
+            left: 330px;
+
+            top: 950px;
+
+        }
+
+
+        #challenge4 {
+
+            left: 1450px;
+
+            top: 950px;
+
+        }
+
+
+        /* =====================================================
+           SAÍDA
+        ===================================================== */
+
+        #exit {
+
+            position: absolute;
+
+            left: 2200px;
+
+            top: 1200px;
+
+            width: 230px;
+
+            height: 160px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            justify-content: center;
+
+            text-align: center;
+
+            font-weight: bold;
+
+            color:
+                #60717b;
+
+            background:
+                rgba(5, 10, 16, .95);
+
+            border:
+                3px solid #455a64;
+
+            box-shadow:
+                inset 0 0 30px
+                rgba(0,0,0,.8);
+
+        }
+
+
+        #exit.unlocked {
+
+            color:
+                #b8ffca;
+
+            border-color:
+                #63ff7a;
+
+            box-shadow:
+                0 0 35px
+                rgba(99,255,122,.8);
+
+        }
+
+
+        /* =====================================================
+           PERSONAGEM
+           
+           >>> ESTE É O PNG QUE SE MOVE <<<
+           
+           Arquivo:
+           
+           zero.png
+           
+           Coloque na mesma pasta do index.html.
+        ===================================================== */
+
+        #player {
+
+            position: absolute;
+
+            width: 82px;
+
+            height: 104px;
+
+            z-index: 50;
+
+            pointer-events: none;
+
+            filter:
+                drop-shadow(
+                    0 0 8px #00eaff
+                )
+                drop-shadow(
+                    0 0 18px
+                    rgba(0,234,255,.7)
+                );
+
+        }
+
+
+        #player img {
+
+            width: 82px;
+
+            height: 104px;
+
+            object-fit: contain;
+
+            display: block;
+
+        }
+
+
+        /* IDENTIFICA O PERSONAGEM */
+
+        #player::after {
+
+            content:
+                "VOCÊ • ZERO.PNG";
+
+            position: absolute;
+
+            left: 50%;
+
+            transform:
+                translateX(-50%);
+
+            bottom: -25px;
+
+            white-space: nowrap;
+
+            padding: 4px 7px;
+
+            background:
+                rgba(2,12,24,.95);
+
+            border:
+                1px solid #00eaff;
+
+            color:
+                #00eaff;
+
+            font-size: 10px;
+
+            letter-spacing: 1px;
+
+        }
+
+
+        /* =====================================================
+           HUD
+        ===================================================== */
+
+        #hud {
+
+            position: fixed;
+
+            top: 15px;
+
+            left: 15px;
+
+            z-index: 100;
+
+            width: 290px;
+
+            padding: 15px;
+
+            background:
+                rgba(5,12,22,.94);
+
+            border:
+                2px solid #00eaff;
+
+            border-radius: 10px;
+
+            box-shadow:
+                0 0 20px
+                rgba(0,234,255,.3);
+
+        }
+
+
+        #hud h2 {
+
+            margin:
+                0 0 10px;
+
+            font-size: 18px;
+
+        }
+
+
+        #progressBackground {
+
+            height: 12px;
+
+            margin-top: 10px;
+
+            background: #222;
+
+            border-radius: 10px;
+
+            overflow: hidden;
+
+        }
+
+
+        #progress {
+
+            width: 0%;
+
+            height: 100%;
+
+            background:
+                #63d471;
+
+            transition:
+                .4s;
+
+        }
+
+
+        #phaseStatus {
+
+            margin-top: 10px;
+
+            color:
+                #aaa;
+
+            font-size: 13px;
+
+        }
+
+
+        /* =====================================================
+           CONTROLES
+        ===================================================== */
+
+        #controls {
+
+            position: fixed;
+
+            bottom: 15px;
+
+            left: 15px;
+
+            z-index: 100;
+
+            padding: 10px 14px;
+
+            background:
+                rgba(5,12,22,.94);
+
+            border:
+                1px solid #00eaff;
+
+            border-radius: 8px;
+
+            font-size: 13px;
+
+        }
+
+
+        /* =====================================================
+           JANELA DOS DESAFIOS
+        ===================================================== */
+
+        #challengeWindow {
+
+            position: fixed;
+
+            z-index: 300;
+
+            left: 50%;
+
+            top: 50%;
+
+            transform:
+                translate(-50%, -50%);
+
+            width: 1050px;
+
+            max-width: 94vw;
+
+            max-height: 90vh;
+
+            overflow: auto;
+
+            background:
+                #171717;
+
+            border:
+                3px solid #00eaff;
+
+            border-radius: 15px;
+
+            box-shadow:
+                0 0 50px
+                rgba(0,234,255,.3);
+
+            display: none;
+
+        }
+
+
+        #challengeHeader {
+
+            padding: 18px;
+
+            background:
+                #242424;
+
+            display: flex;
+
+            justify-content:
+                space-between;
+
+            align-items: center;
+
+        }
+
+
+        #challengeHeader h2 {
+
+            margin: 0;
+
+        }
+
+
+        #closeChallenge {
+
+            background:
+                #c74747;
+
+            color: white;
+
+            border: none;
+
+            padding: 7px 12px;
+
+            border-radius: 6px;
+
+            cursor: pointer;
+
+        }
+
+
+        /* =====================================================
+           PAINÉIS
+        ===================================================== */
+
+        #mainPanel {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 20px;
+
+            padding: 20px;
+
+        }
+
+
+        #challengeText {
+
+            font-size: 17px;
+
+            line-height: 1.5;
+
+            margin-bottom: 15px;
+
+        }
+
+
+        /* =====================================================
+           PREVIEW
+        ===================================================== */
+
+        #preview {
+
+            margin: 15px 0;
+
+            padding: 25px;
+
+            min-height: 170px;
+
+            background:
+                #eee;
+
+            color:
+                #222;
+
+            border-radius: 8px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            text-align: center;
+
+        }
+
+
+        #preview h1 {
+
+            margin:
+                0 0 15px;
+
+            font-size: 28px;
+
+        }
+
+
+        #preview p {
+
+            margin: 0;
+
+            font-size: 18px;
+
+        }
+
+
+        .stepTitle {
+
+            margin-top: 20px;
+
+            margin-bottom: 8px;
+
+            color:
+                #72db82;
+
+            font-weight: bold;
+
+        }
+
+
+        .optionGroup {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 8px;
+
+        }
+
+
+        .optionButton {
+
+            padding: 10px 15px;
+
+            background:
+                #333;
+
+            color: white;
+
+            border:
+                2px solid #555;
+
+            border-radius: 7px;
+
+            cursor: pointer;
+
+            font-family:
+                monospace;
+
+        }
+
+
+        .optionButton:hover {
+
+            background:
+                #444;
+
+        }
+
+
+        .optionButton.selected {
+
+            background:
+                #35683d;
+
+            border-color:
+                #74d983;
+
+        }
+
+
+        #testButton {
+
+            margin-top: 20px;
+
+            width: 100%;
+
+            padding: 13px;
+
+            background:
+                #63d471;
+
+            color:
+                #111;
+
+            border: none;
+
+            border-radius: 8px;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+        }
+
+
+        /* =====================================================
+           CÓDIGO
+        ===================================================== */
+
+        #rightPanel {
+
+            background:
+                #0e0e0e;
+
+            border:
+                2px solid #3d3d3d;
+
+            border-radius: 10px;
+
+            padding: 18px;
+
+            min-height: 500px;
+
+        }
+
+
+        #rightPanel h3 {
+
+            margin-top: 0;
+
+            color:
+                #7be487;
+
+        }
+
+
+        #codeDescription {
+
+            color:
+                #aaa;
+
+            font-size: 14px;
+
+            line-height: 1.5;
+
+        }
+
+
+        #codeBox {
+
+            background:
+                #050505;
+
+            border:
+                1px solid #333;
+
+            border-radius: 8px;
+
+            padding: 18px;
+
+            min-height: 160px;
+
+            overflow-x: auto;
+
+        }
+
+
+        #codeBox pre {
+
+            margin: 0;
+
+            white-space: pre-wrap;
+
+            color:
+                #eee;
+
+            font-family:
+                Consolas,
+                monospace;
+
+            font-size: 16px;
+
+            line-height: 1.6;
+
+        }
+
+
+        .codeSelector {
+            color: #7dcfff;
+        }
+
+
+        .codeProperty {
+            color: #c792ea;
+        }
+
+
+        .codeValue {
+            color: #ecc48d;
+        }
+
+
+        #explanation {
+
+            margin-top: 20px;
+
+            padding: 15px;
+
+            background:
+                #202020;
+
+            border-left:
+                4px solid #63d471;
+
+            border-radius: 5px;
+
+            line-height: 1.5;
+
+            color:
+                #ddd;
+
+        }
+
+
+        #feedback {
+
+            margin-top: 15px;
+
+            padding: 12px;
+
+            border-radius: 8px;
+
+            display: none;
+
+        }
+
+
+        #feedback.success {
+
+            display: block;
+
+            background:
+                #214f2b;
+
+            border:
+                1px solid #5bd56d;
+
+        }
+
+
+        #feedback.error {
+
+            display: block;
+
+            background:
+                #512626;
+
+            border:
+                1px solid #dc6969;
+
+        }
+
+
+        /* =====================================================
+           INTRO
+        ===================================================== */
+
+        #intro {
+
+            position: fixed;
+
+            inset: 0;
+
+            z-index: 500;
+
+            background:
+                radial-gradient(
+                    circle,
+                    #10263d,
+                    #03060d 70%
+                );
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            text-align: center;
+
+        }
+
+
+        #introBox {
+
+            width: 650px;
+
+            max-width: 90%;
+
+            padding: 40px;
+
+            background:
+                rgba(5,15,28,.96);
+
+            border:
+                2px solid #00eaff;
+
+            border-radius: 15px;
+
+            box-shadow:
+                0 0 50px
+                rgba(0,234,255,.25);
+
+        }
+
+
+        #introBox h1 {
+
+            font-size: 42px;
+
+            margin-top: 0;
+
+        }
+
+
+        #startButton {
+
+            margin-top: 20px;
+
+            padding: 14px 35px;
+
+            background:
+                #63d471;
+
+            border: none;
+
+            border-radius: 8px;
+
+            font-size: 17px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+        }
+
+
+        /* =====================================================
+           BOTÃO DA PRÓXIMA FASE
+        ===================================================== */
+
+        #nextPhaseButton {
+
+            position: fixed;
+
+            left: 50%;
+
+            bottom: 30px;
+
+            transform:
+                translateX(-50%);
+
+            z-index: 400;
+
+            padding: 16px 30px;
+
+            background:
+                #63d471;
+
+            color:
+                #07100a;
+
+            border:
+                2px solid #b8ffca;
+
+            border-radius: 10px;
+
+            font-size: 18px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 0 30px
+                rgba(99,255,122,.7);
+
+            display: none;
+
+            animation:
+                pulse 1.5s infinite;
+
+        }
+
+
+        @keyframes pulse {
+
+            0% {
+                transform:
+                    translateX(-50%)
+                    scale(1);
+            }
+
+            50% {
+                transform:
+                    translateX(-50%)
+                    scale(1.05);
+            }
+
+            100% {
+                transform:
+                    translateX(-50%)
+                    scale(1);
+            }
+
+        }
+
+
+        @media (max-width: 800px) {
+
+            #mainPanel {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     JOGO
+========================================================= -->
+
+<div id="game">
+
+
+    <div id="world">
+
+
+        <!-- CAMINHOS -->
+
+        <div class="road horizontal"></div>
+
+        <div class="road vertical"></div>
+
+
+        <!-- DESAFIO 1 -->
+
+        <div
+            id="challenge1"
+            class="sign"
+            onclick="openChallenge(1)"
+        >
+
+            <h1>
+                Meu Título
+            </h1>
+
+            <p>
+                Faça o título ficar maior.
+            </p>
+
+        </div>
+
+
+        <!-- DESAFIO 2 -->
+
+        <div
+            id="challenge2"
+            class="sign"
+            onclick="openChallenge(2)"
+        >
+
+            <h1>
+                Olá!
+            </h1>
+
+            <p>
+                Faça este título ficar vermelho.
+            </p>
+
+        </div>
+
+
+        <!-- DESAFIO 3 -->
+
+        <div
+            id="challenge3"
+            class="sign"
+            onclick="openChallenge(3)"
+        >
+
+            <h1>
+                Minha Página
+            </h1>
+
+            <p>
+                Mude a cor do fundo.
+            </p>
+
+        </div>
+
+
+        <!-- DESAFIO 4 -->
+
+        <div
+            id="challenge4"
+            class="sign"
+            onclick="openChallenge(4)"
+        >
+
+            <h1>
+                Aprendendo
+            </h1>
+
+            <p>
+                Faça o parágrafo ficar verde.
+            </p>
+
+        </div>
+
+
+        <!-- SAÍDA -->
+
+        <div id="exit">
+
+            🔒
+
+            <br>
+
+            SAÍDA
+
+            <br>
+
+            Complete os desafios
+
+        </div>
+
+
+        <!-- =================================================
+             PERSONAGEM
+             
+             >>> ESTE PNG SE MOVE <<<
+             
+             zero.png
+        ================================================== -->
+
+        <div id="player">
+
+            <img
+                src="/img/zero.png"
+                alt="Personagem Zero"
+            >
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =====================================================
+         HUD
+    ===================================================== -->
+
+    <div id="hud">
+
+        <h2>
+            🌐 Fase 4 — CSS Básico
+        </h2>
+
+        <div>
+
+            Acertos:
+
+            <strong>
+
+                <span id="count">
+                    0
+                </span>
+
+                / 4
+
+            </strong>
+
+        </div>
+
+
+        <div id="progressBackground">
+
+            <div id="progress"></div>
+
+        </div>
+
+
+        <div id="phaseStatus">
+
+            Complete todos os desafios
+            para liberar a Fase 5.
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         CONTROLES
+    ===================================================== -->
+
+    <div id="controls">
+
+        🎮 WASD / Setas — andar
+
+        <br>
+
+        🖱️ Clique nos terminais
+
+        <br>
+
+        🤖 Personagem: ZERO.PNG
+
+    </div>
+
+
+</div>
+
+
+<!-- =========================================================
+     BOTÃO PRÓXIMA FASE
+========================================================= -->
+
+<button
+    id="nextPhaseButton"
+    onclick="goToNextPhase()"
+>
+
+    🚀 IR PARA A FASE 5 →
+
+</button>
+
+
+<!-- =========================================================
+     INTRO
+========================================================= -->
+
+<div id="intro">
+
+    <div id="introBox">
+
+        <h1>
+            🌐 O Mundo Sem Estilo
+        </h1>
+
+        <p>
+            Fase 4 — CSS Básico
+        </p>
+
+        <p>
+            Você já sabe estruturar uma página
+            usando HTML.
+        </p>
+
+        <p>
+
+            Agora você vai descobrir
+            como mudar a aparência dela.
+
+        </p>
+
+        <p>
+
+            Não precisa saber escrever CSS.
+
+            <br>
+
+            <strong>
+                Teste as opções e descubra.
+            </strong>
+
+        </p>
+
+
+        <button
+            id="startButton"
+            onclick="startGame()"
+        >
+
+            COMEÇAR
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     JANELA DE DESAFIO
+========================================================= -->
+
+<div id="challengeWindow">
+
+
+    <div id="challengeHeader">
+
+        <h2 id="challengeTitle">
+            Desafio
+        </h2>
+
+
+        <button
+            id="closeChallenge"
+            onclick="closeChallenge()"
+        >
+
+            X
+
+        </button>
+
+    </div>
+
+
+    <div id="mainPanel">
+
+
+        <!-- =================================================
+             TESTE
+        ================================================== -->
+
+        <div id="leftPanel">
+
+            <div id="challengeText"></div>
+
+
+            <div id="preview">
+
+                <div>
+
+                    <h1 id="previewTitle">
+                        Meu Título
+                    </h1>
+
+                    <p id="previewParagraph">
+                        Estou aprendendo CSS!
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="stepTitle">
+
+                1️⃣ Escolha o que você quer mudar
+
+            </div>
+
+
+            <div
+                id="propertyOptions"
+                class="optionGroup"
+            ></div>
+
+
+            <div class="stepTitle">
+
+                2️⃣ Escolha como quer mudar
+
+            </div>
+
+
+            <div
+                id="valueOptions"
+                class="optionGroup"
+            ></div>
+
+
+            <button
+                id="testButton"
+                onclick="testCombination()"
+            >
+
+                🔍 TESTAR
+
+            </button>
+
+
+            <div id="feedback"></div>
+
+        </div>
+
+
+        <!-- =================================================
+             CÓDIGO
+        ================================================== -->
+
+        <div id="rightPanel">
+
+            <h3>
+                💻 Código CSS
+            </h3>
+
+
+            <div id="codeDescription">
+
+                Clique nas opções.
+
+                <br><br>
+
+                O código aparecerá aqui.
+
+                <br><br>
+
+                Observe como suas escolhas
+                se transformam em CSS.
+
+            </div>
+
+
+            <div id="codeBox">
+
+                <pre id="codeText">
+
+/* Escolha uma propriedade */
+
+                </pre>
+
+            </div>
+
+
+            <div id="explanation">
+
+                💡
+
+                <strong>
+                    Observe o código.
+                </strong>
+
+                <br><br>
+
+                Você não precisa decorar.
+
+                Primeiro experimente.
+
+                Depois tente entender
+                o que cada parte significa.
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+
+/* =========================================================
+   PERSONAGEM
+========================================================= */
+
+const player =
+    document.getElementById(
+        "player"
+    );
+
+
+let playerX = 1050;
+
+let playerY = 580;
+
+
+const speed = 5;
+
+
+const keys = {};
+
+
+/* =========================================================
+   TECLAS
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        keys[
+            event.key.toLowerCase()
+        ] = true;
+
+    }
+);
+
+
+document.addEventListener(
+    "keyup",
+    function(event) {
+
+        keys[
+            event.key.toLowerCase()
+        ] = false;
+
+    }
+);
+
+
+/* =========================================================
+   MOVIMENTO
+========================================================= */
+
+function gameLoop() {
+
+
+    if (
+        keys["w"] ||
+        keys["arrowup"]
+    ) {
+
+        playerY -= speed;
+
+    }
+
+
+    if (
+        keys["s"] ||
+        keys["arrowdown"]
+    ) {
+
+        playerY += speed;
+
+    }
+
+
+    if (
+        keys["a"] ||
+        keys["arrowleft"]
+    ) {
+
+        playerX -= speed;
+
+    }
+
+
+    if (
+        keys["d"] ||
+        keys["arrowright"]
+    ) {
+
+        playerX += speed;
+
+    }
+
+
+    playerX =
+        Math.max(
+            0,
+            Math.min(
+                2510,
+                playerX
+            )
+        );
+
+
+    playerY =
+        Math.max(
+            0,
+            Math.min(
+                1510,
+                playerY
+            )
+        );
+
+
+    player.style.left =
+        playerX + "px";
+
+
+    player.style.top =
+        playerY + "px";
+
+
+    /* =====================================================
+       CÂMERA
+    ===================================================== */
+
+    const screenWidth =
+        window.innerWidth;
+
+
+    const screenHeight =
+        window.innerHeight;
+
+
+    let cameraX =
+        playerX -
+        screenWidth / 2;
+
+
+    let cameraY =
+        playerY -
+        screenHeight / 2;
+
+
+    cameraX =
+        Math.max(
+            0,
+            Math.min(
+                2600 - screenWidth,
+                cameraX
+            )
+        );
+
+
+    cameraY =
+        Math.max(
+            0,
+            Math.min(
+                1600 - screenHeight,
+                cameraY
+            )
+        );
+
+
+    document.getElementById(
+        "world"
+    ).style.transform =
+
+        `translate(
+            ${-cameraX}px,
+            ${-cameraY}px
+        )`;
+
+
+    requestAnimationFrame(
+        gameLoop
+    );
+
+}
+
+
+gameLoop();
+
+
+/* =========================================================
+   DESAFIOS
+========================================================= */
+
+const challenges = {
+
+
+    1: {
+
+        title:
+            "🔠 Desafio 1 — Tamanho",
+
+        text:
+            "O título está pequeno. " +
+            "Experimente as opções e descubra " +
+            "como deixá-lo maior.",
+
+        properties: [
+
+            "color",
+
+            "font-size",
+
+            "background-color"
+
+        ],
+
+        values: [
+
+            "16px",
+
+            "24px",
+
+            "32px",
+
+            "48px"
+
+        ],
+
+        selector:
+            "h1",
+
+        correctProperty:
+            "font-size",
+
+        correctValue:
+            "48px",
+
+        explanation:
+            "<strong>font-size</strong> controla " +
+            "o tamanho da fonte."
+
+    },
+
+
+    2: {
+
+        title:
+            "🎨 Desafio 2 — Cor",
+
+        text:
+            "O título está preto. " +
+            "Descubra como deixá-lo vermelho.",
+
+        properties: [
+
+            "font-size",
+
+            "color",
+
+            "background-color"
+
+        ],
+
+        values: [
+
+            "blue",
+
+            "green",
+
+            "red",
+
+            "purple"
+
+        ],
+
+        selector:
+            "h1",
+
+        correctProperty:
+            "color",
+
+        correctValue:
+            "red",
+
+        explanation:
+            "<strong>color</strong> controla " +
+            "a cor do texto."
+
+    },
+
+
+    3: {
+
+        title:
+            "🟦 Desafio 3 — Fundo",
+
+        text:
+            "Agora queremos mudar o fundo. " +
+            "Descubra qual propriedade faz isso.",
+
+        properties: [
+
+            "color",
+
+            "font-size",
+
+            "background-color"
+
+        ],
+
+        values: [
+
+            "white",
+
+            "lightblue",
+
+            "lightgreen",
+
+            "purple"
+
+        ],
+
+        selector:
+            "div",
+
+        correctProperty:
+            "background-color",
+
+        correctValue:
+            "lightblue",
+
+        explanation:
+            "<strong>background-color</strong> " +
+            "controla a cor do fundo."
+
+    },
+
+
+    4: {
+
+        title:
+            "📝 Desafio 4 — Parágrafo",
+
+        text:
+            "Temos um título e um parágrafo. " +
+            "Faça somente o parágrafo ficar verde.",
+
+        properties: [
+
+            "h1",
+
+            "p"
+
+        ],
+
+        values: [
+
+            "red",
+
+            "blue",
+
+            "green",
+
+            "purple"
+
+        ],
+
+        selector:
+            "p",
+
+        correctProperty:
+            "p",
+
+        correctValue:
+            "green",
+
+        explanation:
+            "O <strong>p</strong> representa " +
+            "o parágrafo."
+
+    }
+
+};
+
+
+/* =========================================================
+   ESTADO
+========================================================= */
+
+let currentChallenge = null;
+
+let selectedProperty = null;
+
+let selectedValue = null;
+
+
+/* =========================================================
+   SISTEMA DE ACERTOS
+========================================================= */
+
+/*
+   Os acertos ficam salvos no navegador.
+
+   Assim, se o usuário atualizar a página,
+   os desafios concluídos continuam concluídos.
+*/
+
+let completedChallenges =
+    JSON.parse(
+        localStorage.getItem(
+            "fase4CSSAcertos"
+        )
+    ) || {
+
+        1: false,
+
+        2: false,
+
+        3: false,
+
+        4: false
+
+    };
+
+
+/* =========================================================
+   ABRIR DESAFIO
+========================================================= */
+
+function openChallenge(number) {
+
+
+    currentChallenge =
+        challenges[number];
+
+
+    selectedProperty =
+        null;
+
+
+    selectedValue =
+        null;
+
+
+    document.getElementById(
+        "challengeWindow"
+    ).style.display =
+        "block";
+
+
+    document.getElementById(
+        "challengeTitle"
+    ).textContent =
+        currentChallenge.title;
+
+
+    document.getElementById(
+        "challengeText"
+    ).textContent =
+        currentChallenge.text;
+
+
+    resetPreview();
+
+
+    createPropertyButtons();
+
+
+    createValueButtons();
+
+
+    updateCodePanel();
+
+
+    clearFeedback();
+
+}
+
+
+/* =========================================================
+   PROPRIEDADES
+========================================================= */
+
+function createPropertyButtons() {
+
+
+    const container =
+        document.getElementById(
+            "propertyOptions"
+        );
+
+
+    container.innerHTML = "";
+
+
+    currentChallenge
+        .properties
+        .forEach(
+            function(property) {
+
+
+                const button =
+                    document.createElement(
+                        "button"
+                    );
+
+
+                button.className =
+                    "optionButton";
+
+
+                button.textContent =
+                    property;
+
+
+                button.onclick =
+                    function() {
+
+
+                        selectedProperty =
+                            property;
+
+
+                        document
+                            .querySelectorAll(
+                                "#propertyOptions .optionButton"
+                            )
+                            .forEach(
+                                b =>
+                                b.classList.remove(
+                                    "selected"
+                                )
+                            );
+
+
+                        button.classList.add(
+                            "selected"
+                        );
+
+
+                        updateCodePanel();
+
+
+                        updatePreview();
+
+                    };
+
+
+                container.appendChild(
+                    button
+                );
+
+            }
+        );
+
+}
+
+
+/* =========================================================
+   VALORES
+========================================================= */
+
+function createValueButtons() {
+
+
+    const container =
+        document.getElementById(
+            "valueOptions"
+        );
+
+
+    container.innerHTML = "";
+
+
+    currentChallenge
+        .values
+        .forEach(
+            function(value) {
+
+
+                const button =
+                    document.createElement(
+                        "button"
+                    );
+
+
+                button.className =
+                    "optionButton";
+
+
+                button.textContent =
+                    value;
+
+
+                button.onclick =
+                    function() {
+
+
+                        selectedValue =
+                            value;
+
+
+                        document
+                            .querySelectorAll(
+                                "#valueOptions .optionButton"
+                            )
+                            .forEach(
+                                b =>
+                                b.classList.remove(
+                                    "selected"
+                                )
+                            );
+
+
+                        button.classList.add(
+                            "selected"
+                        );
+
+
+                        updateCodePanel();
+
+
+                        updatePreview();
+
+                    };
+
+
+                container.appendChild(
+                    button
+                );
+
+            }
+        );
+
+}
+
+
+/* =========================================================
+   CÓDIGO
+========================================================= */
+
+function updateCodePanel() {
+
+
+    const code =
+        document.getElementById(
+            "codeText"
+        );
+
+
+    if (
+        !selectedProperty &&
+        !selectedValue
+    ) {
+
+
+        code.innerHTML =
+            "/* Escolha uma opção */";
+
+
+        return;
+
+    }
+
+
+    if (
+        selectedProperty &&
+        !selectedValue
+    ) {
+
+
+        code.innerHTML =
+
+`<span class="codeSelector">${currentChallenge.selector}</span> {
+
+    <span class="codeProperty">${selectedProperty}</span>: ;
+
+}`;
+
+
+        return;
+
+    }
+
+
+    code.innerHTML =
+
+`<span class="codeSelector">${currentChallenge.selector}</span> {
+
+    <span class="codeProperty">${selectedProperty}</span>:
+    <span class="codeValue">${selectedValue}</span>;
+
+}`;
+
+}
+
+
+/* =========================================================
+   PREVIEW
+========================================================= */
+
+function updatePreview() {
+
+
+    if (
+        !selectedProperty ||
+        !selectedValue
+    ) {
+
+        return;
+
+    }
+
+
+    const title =
+        document.getElementById(
+            "previewTitle"
+        );
+
+
+    const paragraph =
+        document.getElementById(
+            "previewParagraph"
+        );
+
+
+    const preview =
+        document.getElementById(
+            "preview"
+        );
+
+
+    if (
+        selectedProperty ===
+        "font-size"
+    ) {
+
+        title.style.fontSize =
+            selectedValue;
+
+    }
+
+
+    else if (
+        selectedProperty ===
+        "color"
+    ) {
+
+        title.style.color =
+            selectedValue;
+
+    }
+
+
+    else if (
+        selectedProperty ===
+        "background-color"
+    ) {
+
+        preview.style.backgroundColor =
+            selectedValue;
+
+    }
+
+
+    else if (
+        selectedProperty ===
+        "p"
+    ) {
+
+        paragraph.style.color =
+            selectedValue;
+
+    }
+
+}
+
+
+/* =========================================================
+   TESTAR
+========================================================= */
+
+function testCombination() {
+
+
+    const feedback =
+        document.getElementById(
+            "feedback"
+        );
+
+
+    if (
+        !selectedProperty ||
+        !selectedValue
+    ) {
+
+
+        feedback.className =
+            "error";
+
+
+        feedback.style.display =
+            "block";
+
+
+        feedback.textContent =
+            "🤔 Escolha uma opção primeiro.";
+
+        return;
+
+    }
+
+
+    const challengeNumber =
+        Object.keys(
+            challenges
+        ).find(
+            key =>
+            challenges[key] ===
+            currentChallenge
+        );
+
+
+    if (
+
+        selectedProperty ===
+        currentChallenge.correctProperty
+
+        &&
+
+        selectedValue ===
+        currentChallenge.correctValue
+
+    ) {
+
+
+        feedback.className =
+            "success";
+
+
+        feedback.style.display =
+            "block";
+
+
+        feedback.innerHTML =
+            "✅ ACERTOU! " +
+            "Desafio concluído.";
+
+
+        completeChallenge(
+            challengeNumber
+        );
+
+
+    }
+
+    else {
+
+
+        feedback.className =
+            "error";
+
+
+        feedback.style.display =
+            "block";
+
+
+        feedback.innerHTML =
+            "❌ Ainda não. " +
+            "Você pode continuar testando " +
+            "as combinações.";
+
+    }
+
+}
+
+
+/* =========================================================
+   REGISTRAR ACERTO
+========================================================= */
+
+function completeChallenge(number) {
+
+
+    if (
+        completedChallenges[number]
+    ) {
+
+        return;
+
+    }
+
+
+    completedChallenges[number] =
+        true;
+
+
+    localStorage.setItem(
+
+        "fase4CSSAcertos",
+
+        JSON.stringify(
+            completedChallenges
+        )
+
+    );
+
+
+    document.getElementById(
+        "challenge" + number
+    ).classList.add(
+        "completed"
+    );
+
+
+    updateProgress();
+
+}
+
+
+/* =========================================================
+   ATUALIZAR PROGRESSO
+========================================================= */
+
+function updateProgress() {
+
+
+    let total = 0;
+
+
+    for (
+        let i = 1;
+        i <= 4;
+        i++
+    ) {
+
+
+        if (
+            completedChallenges[i]
+        ) {
+
+            total++;
+
+        }
+
+    }
+
+
+    document.getElementById(
+        "count"
+    ).textContent =
+        total;
+
+
+    document.getElementById(
+        "progress"
+    ).style.width =
+        (total / 4 * 100) + "%";
+
+
+    /* =====================================================
+       TODOS OS DESAFIOS CONCLUÍDOS
+    ===================================================== */
+
+    if (
+        total === 4
+    ) {
+
+
+        unlockNextPhase();
+
+
+    }
+
+}
+
+
+/* =========================================================
+   LIBERAR FASE 5
+========================================================= */
+
+function unlockNextPhase() {
+
+
+    const exit =
+        document.getElementById(
+            "exit"
+        );
+
+
+    exit.classList.add(
+        "unlocked"
+    );
+
+
+    exit.innerHTML =
+
+        "🚪" +
+
+        "<br><br>" +
+
+        "SAÍDA DESBLOQUEADA";
+
+
+    document.getElementById(
+        "phaseStatus"
+    ).innerHTML =
+
+        "🎉 Todos os desafios foram concluídos!";
+
+
+    document.getElementById(
+        "nextPhaseButton"
+    ).style.display =
+        "block";
+
+}
+
+
+/* =========================================================
+   IR PARA FASE 5
+========================================================= */
+
+function goToNextPhase() {
+
+
+    /*
+       O botão abre o arquivo:
+
+       fase5.html
+
+       Portanto, deixe esse arquivo
+       na mesma pasta deste index.html.
+    */
+
+
+    window.location.href =
+        "fase5.html";
+
+}
+
+
+/* =========================================================
+   RESET PREVIEW
+========================================================= */
+
+function resetPreview() {
+
+
+    const title =
+        document.getElementById(
+            "previewTitle"
+        );
+
+
+    const paragraph =
+        document.getElementById(
+            "previewParagraph"
+        );
+
+
+    const preview =
+        document.getElementById(
+            "preview"
+        );
+
+
+    title.style.fontSize =
+        "28px";
+
+
+    title.style.color =
+        "#222";
+
+
+    paragraph.style.color =
+        "#222";
+
+
+    preview.style.backgroundColor =
+        "#eee";
+
+}
+
+
+/* =========================================================
+   FEEDBACK
+========================================================= */
+
+function clearFeedback() {
+
+
+    const feedback =
+        document.getElementById(
+            "feedback"
+        );
+
+
+    feedback.style.display =
+        "none";
+
+
+    feedback.className =
+        "";
+
+}
+
+
+/* =========================================================
+   FECHAR
+========================================================= */
+
+function closeChallenge() {
+
+
+    document.getElementById(
+        "challengeWindow"
+    ).style.display =
+        "none";
+
+}
+
+
+/* =========================================================
+   INICIAR
+========================================================= */
+
+function startGame() {
+
+
+    document.getElementById(
+        "intro"
+    ).style.display =
+        "none";
+
+}
+
+
+/* =========================================================
+   RECUPERAR ACERTOS AO ABRIR O JOGO
+========================================================= */
+
+function loadProgress() {
+
+
+    for (
+        let i = 1;
+        i <= 4;
+        i++
+    ) {
+
+
+        if (
+            completedChallenges[i]
+        ) {
+
+
+            document.getElementById(
+                "challenge" + i
+            ).classList.add(
+                "completed"
+            );
+
+        }
+
+    }
+
+
+    updateProgress();
+
+}
+
+
+/* =========================================================
+   INICIAR PROGRESSO
+========================================================= */
+
+loadProgress();
+
+
+</script>
+
+
+</body>
+
+</html>
+```

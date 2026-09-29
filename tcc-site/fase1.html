@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fase 1 - Estrutura HTML</title>
+<link rel="stylesheet" href="/css/fase1.css">
+<link rel="stylesheet" href="/css/fase1-aula.css">
+<link rel="stylesheet" href="css/fases-responsive.css">
+</head>
+
+<body>
+
+<section id="abertura" class="abertura" aria-live="polite">
+<div class="abertura__zero">
+<img src="/img/zero.png" alt="Zero despertando">
+</div>
+<div class="abertura__balao">
+<p id="falaAbertura"></p>
+<div id="opcoesAbertura" class="opcoes-abertura oculto">
+<button id="sabeSim" type="button">Sim</button>
+<button id="sabeNao" type="button">Não</button>
+</div>
+<button id="proximaFase" class="proxima-fase oculto" type="button">ajudar zero</button>
+<button id="continuarFala" class="proxima-fase" type="button">continuar</button>
+</div>
+
+<section id="aulaHtml" class="aula-html oculto" aria-live="polite" aria-label="Exemplo de HTML e resultado">
+<div class="aula-topo"><span>APRENDENDO HTML COM ZERO</span><strong id="passoAula">EXEMPLO 1 / 6</strong></div>
+<div class="aula-conteudo"><article class="aula-cartao"><h2 id="nomeTag">&lt;html&gt;</h2><p id="explicaTag"></p><div class="exemplo-codigo"><small>EXEMPLO DE CÓDIGO</small><pre id="codigoTag"></pre></div></article>
+<article class="aula-cartao resultado-cartao"><h2>O QUE O NAVEGADOR MOSTRA</h2><div class="navegador"><div class="navegador-topo"><span>● ● ●</span><div id="abaNavegador">Prévia da página</div></div><div id="resultadoTag" class="resultado-pagina"></div></div><p id="notaResultado" class="nota-resultado"></p></article></div>
+<button id="proximoExemplo" type="button">PRÓXIMO EXEMPLO ▶</button>
+</section>
+</section>
+
+<script src="js/save.js"></script>
+<script src="/js/fase1.js"></script>
+<script src="/js/fase1-aula.js"></script>
+
+</body>
+</html>

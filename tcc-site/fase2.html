@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fase 2 - A porta trancada</title>
+<link rel="stylesheet" href="css/fase2.css">
+<script>window.location.replace("fase2-arena.html");</script>
+</head>
+<body>
+<section id="aberturaFase2" class="abertura" aria-live="polite">
+  <img src="img/zero.png" alt="Zero diante da porta">
+  <button id="falaFase2" type="button">...</button>
+</section>
+<main class="cenario">
+  <header class="hud"><span class="logo">&gt; SYSTEM.HTML</span><span>FASE 02 / A PORTA TRANCADA</span><span>XP: <strong id="xp">0</strong></span></header>
+  <section class="arena" aria-label="Cenário da porta trancada">
+    <div class="porta" id="porta"><b>ACESSO RESTRITO</b><strong>HTML</strong><small>PORTA 02</small><i></i></div>
+    <div class="terminal"><span id="generatedCode">AGUARDANDO CÓDIGO...</span></div>
+    <div class="cartao tag" data-tipo="tag" data-valor="h1" tabindex="0"><em>01</em><b>&lt;h1&gt;</b><small>TÍTULO</small></div>
+    <div class="cartao tag" data-tipo="tag" data-valor="p" tabindex="0"><em>02</em><b>&lt;p&gt;</b><small>PARÁGRAFO</small></div>
+    <div class="cartao texto" data-tipo="texto" data-valor="OLÁ, MUNDO!" tabindex="0"><em>03</em><b>OLÁ, MUNDO!</b><small>MENSAGEM</small></div>
+    <div class="cartao texto" data-tipo="texto" data-valor="MEU PRIMEIRO SITE" tabindex="0"><em>04</em><b>MEU PRIMEIRO SITE</b><small>TÍTULO DA PÁGINA</small></div>
+    <div class="cartao texto" data-tipo="texto" data-valor="Estou aprendendo HTML." tabindex="0"><em>05</em><b>Estou aprendendo HTML.</b><small>PARÁGRAFO</small></div>
+    <img id="zero" class="zero" src="img/zero.png" alt="Zero">
+  </section>
+  <section class="missao"><div><label>OBJETIVO</label><h1>ABRIR A PORTA</h1><p>Encontre a tag e o texto corretos pela sala.</p></div><div class="comb"><small>COMBINAÇÃO</small><b id="combination">_ + _</b></div><output id="feedback">Explore a sala com W A S D.</output></section>
+  <p class="controles">W A S D MOVER &nbsp; | &nbsp; F COLETAR / USAR &nbsp; | &nbsp; APROXIME-SE DOS CARTÕES</p>
+</main>
+<div class="complete" id="complete"><div><label>SISTEMA DESBLOQUEADO</label><h1>PORTA ABERTA</h1><p>Você encontrou os elementos corretos e usou HTML para abrir a passagem.</p><strong>+500 XP</strong><button id="nextButton" type="button">IR PARA FASE 3</button></div></div>
+<script src="js/save.js"></script><script src="js/fase2.js"></script>
+<script src="js/mobile-controls.js"></script>
+</body>
+</html><!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fase 2 - Primeiros elementos</title>
+<link rel="stylesheet" href="css/fase2.css">
+</head>
+
+<body>
+
+<section id="aberturaFase2" class="abertura-fase2" aria-live="polite">
+    <div class="abertura-fase2__zero">
+        <img src="img/zero.png" alt="Zero diante da porta">
+    </div>
+    <button id="falaFase2" class="balao-fase2" type="button">...</button>
+</section>
+
+<header>
+
+    <div class="logo">
+        > SYSTEM.HTML
+    </div>
+
+    <div class="fase">
+        FASE 02 — PRIMEIROS ELEMENTOS
+    </div>
+
+    <div class="xp">
+        XP: <span id="xp">0</span>
+    </div>
+
+</header>
+
+
+<main class="container">
+
+<!-- MISSÃO -->
+
+<section class="mission">
+
+    <h1 id="missionTitle">
+        MISSÃO 01 — O PRIMEIRO ELEMENTO
+    </h1>
+
+    <p id="missionDescription">
+        O computador precisa reconhecer uma mensagem.
+        Sua primeira tarefa é criar um título usando HTML.
+    </p>
+
+    <div class="objective">
+
+        <strong>OBJETIVO:</strong>
+
+        <br><br>
+
+        Faça o computador mostrar:
+
+        <br><br>
+
+        <strong id="targetText">
+            OLÁ, MUNDO!
+        </strong>
+
+    </div>
+
+</section>
+
+
+<section class="workspace">
+
+<!-- EDITOR -->
+
+<div class="panel">
+
+    <div class="panel-title">
+        EDITOR — MONTE SEU CÓDIGO
+    </div>
+
+    <div class="editor">
+
+        <h2>1. ESCOLHA UMA TAG</h2>
+
+        <div class="options">
+
+            <button class="option"
+                onclick="selectTag('h1',this)">
+                &lt;h1&gt; Título
+            </button>
+
+            <button class="option"
+                onclick="selectTag('p',this)">
+                &lt;p&gt; Parágrafo
+            </button>
+
+        </div>
+
+
+        <h2>2. ESCOLHA O TEXTO</h2>
+
+        <div class="options">
+
+            <button class="option"
+                onclick="selectText('OLÁ, MUNDO!',this)">
+                OLÁ, MUNDO!
+            </button>
+
+            <button class="option"
+                onclick="selectText('MEU PRIMEIRO SITE',this)">
+                MEU PRIMEIRO SITE
+            </button>
+
+            <button class="option"
+                onclick="selectText('Estou aprendendo HTML.',this)">
+                Estou aprendendo HTML.
+            </button>
+
+        </div>
+
+
+        <h2>3. SEU CÓDIGO</h2>
+
+        <div class="code-box">
+
+            <span id="generatedCode"
+                class="empty">
+                Clique nas opções acima para montar seu código...
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="controls">
+
+        <button class="run"
+            onclick="runCode()">
+            ▶ EXECUTAR
+        </button>
+
+        <button class="hint"
+            onclick="showHint()">
+            💡 DICA
+        </button>
+
+        <button
+            id="nextButton"
+            class="next"
+            onclick="nextMission()">
+            CONTINUAR →
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- RESULTADO -->
+
+<div class="panel">
+
+    <div class="panel-title">
+        RESULTADO — NAVEGADOR
+    </div>
+
+    <iframe id="result"></iframe>
+
+</div>
+
+</section>
+
+
+<!-- FEEDBACK -->
+
+<div id="feedback"
+    class="feedback">
+
+</div>
+
+<!-- PROGRESSO -->
+
+<div class="progress-container">
+
+    <div class="progress-info">
+
+        <span>
+            PROGRESSO DA FASE
+        </span>
+
+        <span id="progressText">
+            1 / 5
+        </span>
+
+    </div>
+
+    <div class="progress">
+
+        <div
+            class="progress-bar"
+            id="progressBar">
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- CONHECIMENTO -->
+
+<section class="lesson">
+
+    <h2>
+        📚 CONHECIMENTO DESBLOQUEADO
+    </h2>
+
+    <p>
+        HTML utiliza elementos chamados
+        <strong>tags</strong>.
+    </p>
+
+    <br>
+
+    <p>
+        Você acabou de usar uma tag de título:
+    </p>
+
+    <code>
+        &lt;h1&gt;Seu texto&lt;/h1&gt;
+    </code>
+
+</section>
+
+</main>
+
+
+<!-- FINAL -->
+
+<div class="complete"
+    id="complete">
+
+    <div class="complete-box">
+
+        <h1>
+            FASE CONCLUÍDA
+        </h1>
+
+        <p>
+
+            Você completou seus primeiros
+            desafios de HTML.
+
+            <br><br>
+
+            Você aprendeu:
+
+            <br>
+
+            ✓ O que são tags<br>
+            ✓ Tags de abertura e fechamento<br>
+            ✓ &lt;h1&gt;<br>
+            ✓ &lt;p&gt;
+
+        </p>
+
+        <strong style="color:#ffd166;">
+            +500 XP
+        </strong>
+
+        <br><br>
+
+        <button
+            class="next"
+            style="display:inline-block;"
+            onclick="goNextPhase()">
+
+            IR PARA FASE 3 →
+
+        </button>
+
+    </div>
+
+</div>
+
+<script src="js/save.js"></script>
+<script src="js/fase2.js"></script>
+</body>
+</html>

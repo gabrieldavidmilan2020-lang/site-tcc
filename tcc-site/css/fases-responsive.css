@@ -1,0 +1,57 @@
+/* Ajustes comuns para as fases em telas estreitas e baixas. */
+*, *::before, *::after { box-sizing: border-box; }
+img, canvas, video { max-width: 100%; }
+button, input, textarea { max-width: 100%; }
+
+@media (max-width: 800px), (max-height: 600px) {
+  html { min-height: 100%; }
+  body { min-height: 100dvh; }
+
+  #intro, #intro-zero, #final-box, #dialogo-box, #dialogo, #intro,
+  .intro, .abertura, .abertura-fase2, .dialogo, .abertura__balao {
+    max-width: 100%;
+  }
+  #intro, #dialogo-box, #final-box, .intro, .dialogo {
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 16px;
+  }
+  #speech-bubble, #balao, #dialog, .speech-bubble, .balao,
+  .abertura__balao, .balao-fase2 {
+    width: min(100%, 560px);
+    max-width: 100%;
+  }
+
+  #fase, #layout, .workspace, .aula-conteudo, .rodape, .jogo,
+  .painel-jogo, .elementos-area, .missao, .cenario, .container {
+    min-width: 0;
+    max-width: 100%;
+  }
+  #fase { height: auto; min-height: 100dvh; flex-direction: column; padding: 12px; gap: 16px; }
+  #layout { height: auto; min-height: 100%; flex-direction: column; }
+  canvas#game, #fase #game { width: min(94vw, 1000px); height: min(58dvh, 620px); min-height: 260px; }
+  #map { min-height: 42dvh; }
+  #painel { width: min(94vw, 650px); flex-direction: row; flex-wrap: wrap; }
+  .card { flex: 1 1 230px; width: auto; min-width: 0; }
+  .panel, .painel, .aula-cartao, .workspace > *, .rodape > * { min-width: 0; }
+  .arena { max-width: 100%; }
+
+  .workspace, .aula-conteudo, .rodape, .jogo { flex-direction: column; }
+  .workspace { display: grid; grid-template-columns: minmax(0, 1fr); }
+  .aula-conteudo { display: grid; grid-template-columns: minmax(0, 1fr); }
+  .hud, .topbar { flex-wrap: wrap; gap: 10px; }
+  .hud > *, .topbar > * { min-width: 0; }
+  .complete, .overlay, .vitoria, #final, #end, #success { padding: 16px; overflow-y: auto; }
+  .complete-box, .caixa, #final-box { width: min(100%, 620px); }
+  pre, code, .codigo, .code-box { overflow-wrap: anywhere; white-space: pre-wrap; }
+}
+
+@media (max-width: 520px) {
+  body { overflow-x: hidden; }
+  canvas#game, #fase #game { width: 96vw; height: 52dvh; min-height: 230px; }
+  #map { min-height: 36dvh; }
+  #zero, #personagem img { max-width: 48px; }
+  .hud { font-size: clamp(10px, 3vw, 14px); }
+  .controles { text-align: center; line-height: 1.6; }
+  .panel, .card, .caixa { padding: 12px; }
+}

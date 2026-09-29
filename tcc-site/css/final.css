@@ -1,0 +1,277 @@
+body {
+  margin: 0;
+  overflow: hidden;
+  font-family: monospace;
+}
+
+/* ================= JOGO ================= */
+
+#game {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: none;
+  position: relative;
+  background: black;
+}
+
+#bossVidaContainer {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(880px, calc(100vw - 40px));
+  height: 30px;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(0, 0, 0, 0.85);
+  border: 2px solid #ff3b3b;
+  box-shadow: 0 0 20px rgba(255, 59, 59, 0.5);
+  color: white;
+  font-weight: bold;
+  z-index: 1500;
+}
+
+#bossVidaBar {
+  flex: 1;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(90deg, #ff3b3b 0%, #ffad1f 55%, #ffeb3b 100%);
+  border-radius: 4px;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.4);
+  transition: width 0.2s ease;
+}
+
+#bossVidaTexto {
+  white-space: nowrap;
+  font-size: 13px;
+}
+
+/* MAPA GRANDE (SEM BORDA PRETA) */
+#mapa {
+  width: 3000px;
+  height: 1000px;
+  position: absolute;
+
+  background: url("../img/final.png");
+  background-repeat: repeat;
+}
+
+/* ================= PLAYER ================= */
+
+#player {
+  width: 60px;
+  height: 60px;
+  position: absolute;
+
+  top: 300px;
+  left: 50px;
+
+  background: url("../img/zero.png") no-repeat center;
+  background-size: contain;
+}
+
+/* ================= BOSS ================= */
+
+#boss {
+  width: 150px;
+  height: 150px;
+  position: absolute;
+
+  top: 100px;
+  left: 500px;
+
+  background: url("../img/chefao.png") no-repeat center;
+  background-size: contain;
+}
+
+/* ================= ATAQUES (COM IMG) ================= */
+
+.ataque {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+/* ================= PAINÉIS ================= */
+
+.painel {
+  width: 70px;
+  height: 70px;
+  position: absolute;
+
+  background: url("../img/painel.png") no-repeat center;
+  background-size: contain;
+}
+
+/* POSIÇÕES ESPALHADAS */
+#painel1 { left: 300px; top: 200px; }
+#painel2 { left: 800px; top: 600px; }
+#painel3 { left: 1400px; top: 300px; }
+#painel4 { left: 2000px; top: 700px; }
+#painel5 { left: 2500px; top: 200px; }
+#painel6 { left: 2800px; top: 600px; }
+
+/* PAINEL FINAL */
+#painelFinal {
+  left: 2600px;
+  top: 500px;
+  display: none;
+}
+
+.painel.finalizado::before {
+  content: "FINALIZADO";
+  position: absolute;
+  top: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: lime;
+  font-size: 12px;
+  font-weight: bold;
+  text-shadow: 0 0 4px rgba(0, 0, 0, 0.8);
+  white-space: nowrap;
+}
+
+/* SETA */
+.seta {
+  position: absolute;
+  top: -30px;
+  color: yellow;
+  font-size: 12px;
+  text-align: center;
+  width: 100%;
+  animation: piscar 1s infinite;
+}
+
+@keyframes piscar {
+  50% { opacity: 0; }
+}
+
+/* ================= PORTA ================= */
+
+#porta {
+  width: 80px;
+  height: 100px;
+  position: absolute;
+
+  top: 400px;
+  left: 2600px;
+
+  background: url("../img/porta.png") no-repeat center;
+  background-size: contain;
+  cursor: pointer;
+}
+
+/* ================= VIDA ================= */
+
+#vida {
+  position: absolute;
+  font-size: 24px;
+  color: red;
+  font-weight: bold;
+  z-index: 100;
+}
+
+/* ================= GAME OVER ================= */
+
+#gameover {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  background: rgba(0,0,0,0.9);
+  color: white;
+
+  display: none;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  z-index: 2000;
+}
+
+#gameover h1 {
+  color: red;
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+#gameover p {
+  color: white;
+  font-size: 18px;
+  margin-bottom: 30px;
+}
+
+/* ================= MENSAGEM ERRO ================= */
+
+#mensagemErro {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  color: red;
+  font-size: 18px;
+  display: none;
+}
+
+/* ================= CUTSCENE ================= */
+
+#cutscene {
+  width: 100vw;
+  height: 100vh;
+  background: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* CAIXA DE DIÁLOGO */
+#dialogo-box {
+  width: 600px;
+  background: #000;
+  border: 2px solid #00ff00;
+  display: flex;
+  padding: 20px;
+  box-shadow: 0 0 20px #00ff00;
+}
+
+/* RETRATO */
+#retrato {
+  width: 120px;
+  height: 120px;
+  margin-right: 20px;
+}
+
+/* TEXTO */
+#texto-box {
+  color: #00ff00;
+}
+
+/* BOTÃO */
+button {
+  margin-top: 10px;
+  background: black;
+  color: #00ff00;
+  border: 1px solid #00ff00;
+  cursor: pointer;
+}
+
+/* ================= PUZZLE ================= */
+
+#puzzle {
+  position: absolute;
+  top: 30%;
+  left: 30%;
+  width: 40%;
+  background: black;
+  color: #00ff00;
+  border: 2px solid #00ff00;
+  padding: 20px;
+  display: none;
+}

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Fase 6 – Precisão com CSS</title>
+
+<style>
+/* ========= RESET ========= */
+* { box-sizing: border-box; }
+
+body{
+  margin:0;
+  height:100vh;
+  background:#000;
+  color:#fff;
+  font-family:"Courier New", monospace;
+  overflow:hidden;
+  transition:opacity .8s;
+}
+
+/* ========= DIÁLOGO ========= */
+#dialogo{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.85);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:10;
+}
+
+#dialogo-box{
+  display:flex;
+  align-items:flex-end;
+  gap:20px;
+}
+
+#dialogo img{
+  width:110px;
+  image-rendering:pixelated;
+}
+
+#balao{
+  width:520px;
+  background:#111;
+  border:5px solid #00ffff;
+  padding:24px;
+  font-size:18px;
+}
+
+#balao button{
+  margin-top:16px;
+  background:#000;
+  color:#00ffff;
+  border:3px solid #00ffff;
+  padding:8px 18px;
+  cursor:pointer;
+  font-family:inherit;
+}
+
+/* ========= FASE ========= */
+#fase{
+  display:none;
+  height:100vh;
+  justify-content:center;
+  align-items:center;
+  gap:30px;
+}
+
+/* ========= MAPA ========= */
+#game{
+  width:800px;
+  height:480px;
+  background:#050505;
+  border:6px solid #00ffff;
+  position:relative;
+}
+
+/* Zero */
+#zero{
+  width:48px;
+  height:48px;
+  background:url("img/zero.png") center/contain no-repeat;
+  position:absolute;
+  left:40px;
+  top:200px;
+  transition:.3s;
+}
+
+/* Estrela */
+#estrela{
+  width:48px;
+  height:48px;
+  background:url("img/estrela.png") center/contain no-repeat;
+  position:absolute;
+  right:40px;
+  bottom:40px;
+}
+
+/* Obstáculos */
+.obstaculo{
+  width:80px;
+  height:80px;
+  background:#222;
+  border:3px solid red;
+  position:absolute;
+}
+
+/* ========= PAINÉIS ========= */
+#painel{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+
+.card{
+  background:#111;
+  border:3px solid yellow;
+  padding:16px;
+  width:300px;
+}
+
+input{
+  width:100%;
+  padding:8px;
+  font-family:inherit;
+  font-size:16px;
+  margin-top:6px;
+}
+
+/* ========= FINAL ========= */
+#final{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.9);
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  gap:20px;
+}
+</style>
+</head>
+
+<body>
+<script src="js/save.js"></script>
+
+<!-- ========= DIÁLOGO ========= -->
+<div id="dialogo">
+  <div id="dialogo-box">
+    <img src="img/zero.png">
+    <div id="balao">
+      <p id="fala"></p>
+      <button id="next">▶ Próximo</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========= FASE ========= -->
+<div id="fase">
+  <div id="game">
+    <div id="zero"></div>
+    <div id="estrela"></div>
+
+    <!-- Obstáculos -->
+    <div class="obstaculo" style="left:260px; top:120px"></div>
+    <div class="obstaculo" style="left:420px; top:260px"></div>
+  </div>
+
+  <div id="painel">
+    <div class="card">
+      <b>Digite o comando CSS</b>
+      <p>Exemplo: <code>right 64</code></p>
+      <input id="cmd" placeholder="left 32">
+      <button onclick="executar()">Executar</button>
+    </div>
+
+    <div class="card">
+      <b>📋 Colinha</b>
+      <p>left 32 → esquerda</p>
+      <p>right 64 → direita</p>
+      <p>top 32 → sobe</p>
+      <p>bottom 64 → desce</p>
+      <p><i>Unidade: px</i></p>
+    </div>
+  </div>
+</div>
+
+<!-- ========= FINAL ========= -->
+<div id="final">
+  <img src="img/zero.png" width="120">
+  <p>Parabéns! Agora você controla posições com precisão 🎯</p>
+  <button onclick="proxima()">Próxima fase ▶</button>
+</div>
+
+<script>
+/* ========= DIÁLOGO ========= */
+const falas = [
+  "Chegamos longe...",
+  "Mas agora o caminho é perigoso.",
+  "Mover só para esquerda ou direita não basta.",
+  "No CSS, usamos números para ter precisão.",
+  "Digite o comando e a distância.",
+  "Leve-me até a estrela!"
+];
+
+let i = 0;
+const fala = document.getElementById("fala");
+
+fala.innerText = falas[i];
+
+document.getElementById("next").onclick = () => {
+  i++;
+  if(i < falas.length){
+    fala.innerText = falas[i];
+  }else{
+    document.getElementById("dialogo").style.display="none";
+    document.getElementById("fase").style.display="flex";
+  }
+};
+
+/* ========= JOGO ========= */
+const zero = document.getElementById("zero");
+const estrela = document.getElementById("estrela");
+const game = document.getElementById("game");
+const obstaculos = document.querySelectorAll(".obstaculo");
+
+function executar(){
+  const entrada = document.getElementById("cmd").value.trim().toLowerCase();
+  const partes = entrada.split(" ");
+  if(partes.length !== 2) return;
+
+  const direcao = partes[0];
+  const valor = parseInt(partes[1]);
+  if(isNaN(valor)) return;
+
+  let x = zero.offsetLeft;
+  let y = zero.offsetTop;
+
+  if(direcao==="left") x -= valor;
+  if(direcao==="right") x += valor;
+  if(direcao==="top") y -= valor;
+  if(direcao==="bottom") y += valor;
+
+  /* LIMITES */
+  x = Math.max(0, Math.min(x, game.clientWidth - 48));
+  y = Math.max(0, Math.min(y, game.clientHeight - 48));
+
+  /* COLISÃO */
+  const futuro = {l:x, t:y, r:x+48, b:y+48};
+  for(let obs of obstaculos){
+    const o = obs.getBoundingClientRect();
+    const g = game.getBoundingClientRect();
+    const ob = {
+      l:o.left-g.left,
+      r:o.right-g.left,
+      t:o.top-g.top,
+      b:o.bottom-g.top
+    };
+    if(futuro.r>ob.l && futuro.l<ob.r && futuro.b>ob.t && futuro.t<ob.b){
+      return;
+    }
+  }
+
+  zero.style.left = x+"px";
+  zero.style.top = y+"px";
+
+  checarVitoria();
+}
+
+function checarVitoria(){
+  const z = zero.getBoundingClientRect();
+  const e = estrela.getBoundingClientRect();
+  if(
+    z.right > e.left &&
+    z.left < e.right &&
+    z.bottom > e.top &&
+    z.top < e.bottom
+  ){
+    document.getElementById("fase").style.display="none";
+    document.getElementById("final").style.display="flex";
+  }
+}
+
+function proxima(){
+  document.body.style.opacity="0";
+  setTimeout(()=>location.href="fase8.html",800);
+}
+/* ===== SAVE AUTOMÁTICO DA FASE ===== */
+if (window.SaveSystem) {
+    SaveSystem.updateActivePhase(6);
+} else {
+    localStorage.setItem("faseAtual", 6);
+}
+</script>
+
+</body>
+</html>

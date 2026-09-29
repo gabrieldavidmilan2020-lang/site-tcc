@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Fase 6 – O Código Quebrado</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  background:#0b0b0b;
+  font-family:"Courier New", monospace;
+  color:#fff;
+  height:100vh;
+  overflow:hidden;
+}
+
+/* INTRO */
+#intro{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.9);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+#dialog{
+  background:#f4f4f4;
+  color:#000;
+  border:6px solid #000;
+  padding:40px;
+  width:70%;
+  max-width:700px;
+  text-align:center;
+}
+#dialog button{
+  margin-top:25px;
+  padding:12px 30px;
+  background:#000;
+  color:#0f0;
+  border:4px solid #000;
+  cursor:pointer;
+}
+
+/* GAME */
+#game{
+  display:none;
+  height:100vh;
+  padding:20px;
+}
+#layout{
+  display:flex;
+  gap:20px;
+  height:100%;
+}
+
+/* MAPA */
+#map{
+  flex:2;
+  position:relative;
+  border:6px solid #555;
+  background:url("img/beco.png") center/cover no-repeat;
+}
+#zero{
+  position:absolute;
+  left:20px;
+  top:200px;
+  width:64px;
+  transition:all .8s ease;
+}
+#star{
+  position:absolute;
+  left:500px;
+  top:200px;
+  font-size:42px;
+}
+
+/* PAINÉIS */
+.panel{
+  flex:1;
+  background:#000;
+  border:4px solid #0f0;
+  padding:15px;
+  overflow-y:auto;
+}
+.panel h3{
+  color:#0f0;
+  margin-bottom:10px;
+}
+
+/* CÓDIGO QUEBRADO */
+pre{
+  background:#111;
+  color:#f55;
+  padding:12px;
+  border:2px dashed #f55;
+  white-space:pre-wrap;
+}
+
+/* COLINHA */
+#hint{
+  background:#111;
+  border:3px dashed #0f0;
+  padding:10px;
+  margin-bottom:10px;
+  font-size:13px;
+}
+#hint table{
+  width:100%;
+  border-collapse:collapse;
+}
+#hint th,#hint td{
+  border:1px solid #0f0;
+  padding:6px;
+}
+#hint th{color:#0f0;}
+#hint td{color:#ccc;}
+
+/* INPUT */
+textarea{
+  width:100%;
+  height:180px;
+  background:#111;
+  color:#0f0;
+  border:2px solid #0f0;
+  padding:10px;
+  font-family:monospace;
+}
+#check{
+  margin-top:10px;
+  padding:12px;
+  width:100%;
+  background:#0f0;
+  cursor:pointer;
+}
+
+/* FINAL */
+#success{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.9);
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  text-align:center;
+}
+#success button{
+  margin-top:20px;
+  padding:15px 30px;
+  font-size:18px;
+  background:#0f0;
+  border:none;
+  cursor:pointer;
+  font-family:"Courier New", monospace;
+}
+
+/* TRANSIÇÃO */
+.fade{animation:fadeOut 1s forwards;}
+@keyframes fadeOut{to{opacity:0;}}
+</style>
+</head>
+
+<body>
+<script src="js/save.js"></script>
+
+<!-- INTRO -->
+<div id="intro">
+  <div id="dialog">
+    <p id="dialogText"></p>
+    <button id="next">▶ Continuar</button>
+  </div>
+</div>
+
+<!-- GAME -->
+<div id="game">
+<div id="layout">
+
+  <div id="map">
+    <img src="img/zero.png" id="zero">
+    <div id="star">⭐</div>
+  </div>
+
+  <div class="panel">
+    <h3>Código quebrado</h3>
+<pre>
+&lt;html&gt;
+  &lt;body&gt;
+    &lt;h1 id="zero"&gt;Texto&lt;/h1&gt;
+
+    &lt;style
+      #zero {}
+        100px left
+        top 200
+
+    &lt;/html&gt;
+    &lt;/style&gt;
+  &lt;/body&gt;
+</pre>
+  </div>
+
+  <div class="panel">
+    <h3>Arrume o código</h3>
+
+    <div id="hint">
+      <table>
+        <tr><th>Comando</th><th>Efeito</th></tr>
+        <tr><td>left</td><td>Move para a direita</td></tr>
+        <tr><td>right</td><td>Move a partir da direita</td></tr>
+        <tr><td>top</td><td>Move para baixo</td></tr>
+        <tr><td>bottom</td><td>Move a partir de baixo</td></tr>
+      </table>
+      <p style="color:#888;margin-top:6px">
+        Exemplo:<br>
+        <code>#zero { left: 300px; top: 100px; }</code>
+      </p>
+    </div>
+
+    <textarea id="code" placeholder="Digite seu CSS aqui..."></textarea>
+    <button id="check">Aplicar código</button>
+  </div>
+
+</div>
+</div>
+
+<!-- FINAL -->
+<div id="success">
+  <h1>🎉 Parabéns!</h1>
+  <p>Você explorou o código e guiou o Zero até a estrela!</p>
+  <button id="nextPhase">➡ Próxima fase</button>
+</div>
+
+<script>
+/* DIÁLOGO */
+const falas=[
+ "Depois do labirinto, eu encontrei um mapa...",
+ "Mas ele funciona com códigos.",
+ "O problema é que o código está quebrado.",
+ "Você pode arrumar pra mim?"
+];
+let i=0;
+const text=document.getElementById("dialogText");
+text.innerText=falas[i];
+next.onclick=()=>{
+  i++;
+  if(i<falas.length){
+    text.innerText=falas[i];
+  }else{
+    intro.style.display="none";
+    game.style.display="block";
+  }
+};
+
+/* MOVIMENTO LIVRE */
+check.onclick=()=>{
+  const input=document.getElementById("code").value.toLowerCase();
+  const zero=document.getElementById("zero");
+
+  zero.style.position="absolute";
+
+  const rules=[
+    ["left",/left\s*:\s*(\d+)px/],
+    ["right",/right\s*:\s*(\d+)px/],
+    ["top",/top\s*:\s*(\d+)px/],
+    ["bottom",/bottom\s*:\s*(\d+)px/]
+  ];
+
+  rules.forEach(r=>{
+    const m=input.match(r[1]);
+    if(m){
+      zero.style[r[0]]=m[1]+"px";
+      if(r[0]==="left") zero.style.right="auto";
+      if(r[0]==="right") zero.style.left="auto";
+      if(r[0]==="top") zero.style.bottom="auto";
+      if(r[0]==="bottom") zero.style.top="auto";
+    }
+  });
+
+  setTimeout(()=>{
+    const z=zero.getBoundingClientRect();
+    const s=star.getBoundingClientRect();
+    if(z.left<s.right && z.right>s.left && z.top<s.bottom && z.bottom>s.top){
+      success.style.display="flex";
+    }
+  },800);
+};
+
+/* PRÓXIMA FASE */
+nextPhase.onclick=()=>{
+  document.body.classList.add("fade");
+  setTimeout(()=>location.href="fase9.html",1000);
+};
+/* ===== SAVE AUTOMÁTICO DA FASE ===== */
+if (window.SaveSystem) {
+    SaveSystem.updateActivePhase(7);
+} else {
+    localStorage.setItem("faseAtual", 7);
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,90 @@
+body {
+  margin: 0;
+  background: #0b0b0b;
+  font-family: "Courier New", monospace;
+  color: white;
+}
+
+/* DIÁLOGO */
+#dialogo {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 15px;
+}
+
+.balao {
+  background: #111;
+  border: 3px solid cyan;
+  padding: 15px;
+  width: 320px;
+}
+
+/* FASE */
+#fase {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  height: 100vh;
+}
+
+/* MINI GAME */
+#game {
+  width: 420px;
+  height: 300px;
+  border: 4px solid cyan;
+  background: #111;
+  position: relative;
+}
+
+#zero {
+  width: 50px;
+  height: 50px;
+  background: url("../img/zero.png") center/contain no-repeat;
+  position: absolute;
+  left: 0;
+  top: 125px;
+  transition: 0.3s;
+}
+
+#estrela {
+  width: 50px;
+  height: 50px;
+  background: url("../img/estrela.png") center/contain no-repeat;
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+}
+
+/* PAINEL */
+#painel {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.card {
+  background: #111;
+  border: 3px solid yellow;
+  padding: 15px;
+  width: 260px;
+}
+
+.hidden {
+  display: none;
+}
+
+/* FINAL */
+#final {
+  position: fixed;
+  inset: 0;
+  background: black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}

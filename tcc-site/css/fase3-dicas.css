@@ -1,0 +1,2 @@
+.barra-dica{display:flex;align-items:flex-start;gap:14px;margin-top:14px;padding:12px;background:#0b1019;border:1px solid #39475d}.barra-dica button{flex:0 0 auto;padding:9px 12px;color:#10130a;background:#ffca66}.texto-dica{display:none;margin:0;color:#d8e5f1;line-height:1.6;white-space:pre-line}.texto-dica.visivel{display:block}.caixa.erro h2{color:#ffca66}
+@media(max-width:700px){.barra-dica{gap:9px;padding:9px}.barra-dica button{padding:9px;font-size:11px}.texto-dica{font-size:11px}}

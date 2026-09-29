@@ -1,0 +1,159 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: "Courier New", monospace;
+}
+
+body{
+    background: linear-gradient(
+        180deg,
+        #000428,
+        #004e92
+    );
+
+    color:white;
+    min-height:100vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.hidden{
+    display:none;
+}
+
+/* INTRO */
+
+#intro{
+    width:800px;
+    text-align:center;
+}
+
+.personagem{
+    width:150px;
+    margin:auto;
+    font-size:60px;
+}
+
+.balao{
+    background:white;
+    color:black;
+
+    padding:25px;
+    margin:20px auto;
+
+    border:4px solid #ff00ff;
+
+    box-shadow:
+        0 0 10px cyan,
+        0 0 20px magenta;
+
+    position:relative;
+
+    font-size:18px;
+}
+
+.balao::after{
+    content:"";
+    position:absolute;
+
+    left:80px;
+    bottom:-20px;
+
+    border-width:20px 20px 0;
+    border-style:solid;
+    border-color:white transparent transparent;
+}
+
+#iniciar{
+    padding:15px 35px;
+
+    font-size:18px;
+    font-weight:bold;
+
+    background:linear-gradient(
+        #ffff00,
+        #ff9900
+    );
+
+    border:3px solid black;
+
+    cursor:pointer;
+}
+
+/* FASE */
+
+#fase{
+    width:1000px;
+}
+
+h1{
+    text-align:center;
+    margin-bottom:40px;
+
+    color:yellow;
+
+    text-shadow:3px 3px black;
+}
+
+.game{
+    display:flex;
+    justify-content:space-between;
+}
+
+.lado{
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+
+.tag,
+.significado{
+
+    width:280px;
+    min-height:70px;
+
+    border:4px solid white;
+
+    cursor:pointer;
+
+    font-size:18px;
+    font-weight:bold;
+
+    transition:.2s;
+}
+
+.tag{
+    background:#ff0055;
+}
+
+.significado{
+    background:#0066ff;
+}
+
+.tag:hover,
+.significado:hover{
+    transform:scale(1.05);
+}
+
+.selecionado{
+    border-color:yellow;
+    box-shadow:0 0 20px yellow;
+}
+
+.correto{
+    background:limegreen !important;
+}
+
+.errado{
+    background:red !important;
+}
+
+#mensagem{
+    margin-top:30px;
+    text-align:center;
+    font-size:24px;
+    font-weight:bold;
+}

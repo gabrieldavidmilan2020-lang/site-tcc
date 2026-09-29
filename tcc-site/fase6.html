@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Fase 5 – Movendo com CSS</title>
+
+<style>
+/* ========= RESET ========= */
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  height:100vh;
+  background:url("/img/luz.png") center/cover no-repeat;
+  color:#fff;
+  font-family:"Courier New", monospace;
+  overflow:hidden;
+  transition:opacity .8s;
+}
+
+/* ========= DIÁLOGO CENTRAL ========= */
+#dialogo{
+  position:fixed;
+  inset:0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:rgba(0,0,0,.7);
+  z-index:10;
+}
+
+#dialogo-box{
+  display:flex;
+  align-items:flex-end;
+  gap:20px;
+}
+
+#dialogo img{
+  width:120px;
+  image-rendering:pixelated;
+}
+
+#balao{
+  background:#111;
+  border:6px solid cyan;
+  padding:24px;
+  width:520px;
+  font-size:18px;
+}
+
+#balao button{
+  margin-top:16px;
+  background:black;
+  color:cyan;
+  border:3px solid cyan;
+  padding:8px 16px;
+  cursor:pointer;
+  font-family:inherit;
+  font-size:16px;
+}
+
+/* ========= FASE ========= */
+#fase{
+  display:none;
+  height:100vh;
+  justify-content:center;
+  align-items:center;
+  gap:30px;
+}
+
+/* ========= TV ========= */
+#tv{
+  background:#222;
+  border:10px solid #444;
+  border-radius:20px;
+  padding:20px;
+  box-shadow:0 0 40px #000;
+}
+
+/* ========= MAPA ========= */
+#game{
+  width:90vw;
+  max-width:1000px;
+  height:70vh;
+  background:#050505;
+  border:6px inset #00ffff;
+  position:relative;
+  overflow:hidden;
+}
+
+/* Zero */
+#zero{
+  width:48px;
+  height:48px;
+  background:url("img/zero.png") center/contain no-repeat;
+  position:absolute;
+  left:20px;
+  top:50%;
+  transform:translateY(-50%);
+  transition:.25s;
+}
+
+/* Estrela */
+#estrela{
+  width:48px;
+  height:48px;
+  background:url("img/estrela.png") center/contain no-repeat;
+  position:absolute;
+  right:30px;
+  bottom:30px;
+}
+
+/* Obstáculos */
+.obstaculo{
+  width:64px;
+  height:64px;
+  background:url("img/caixa.jpg") center/cover no-repeat;
+  position:absolute;
+}
+
+/* ========= PAINÉIS ========= */
+#painel{
+  display:flex;
+  flex-direction:column;
+  gap:15px;
+}
+
+.card{
+  background:#111;
+  border:4px solid yellow;
+  padding:16px;
+  width:300px;
+}
+
+input{
+  width:100%;
+  padding:8px;
+  font-family:inherit;
+  margin-top:8px;
+  font-size:16px;
+}
+
+/* ========= FINAL ========= */
+#final{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.9);
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  gap:20px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- ========= DIÁLOGO ========= -->
+<div id="dialogo">
+  <div id="dialogo-box">
+    <img src="img/zero.png">
+    <div id="balao">
+      <p id="fala"></p>
+      <button id="next">▶ Próximo</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========= FASE ========= -->
+<div id="fase">
+  <div id="tv">
+    <div id="game">
+      <div id="zero"></div>
+      <div id="estrela"></div>
+
+      <!-- Obstáculos -->
+      <div class="obstaculo" style="left:220px; top:120px"></div>
+      <div class="obstaculo" style="left:420px; top:260px"></div>
+      <div class="obstaculo" style="left:620px; top:140px"></div>
+      <div class="obstaculo" style="left:300px; top:420px"></div>
+      <div class="obstaculo" style="left:520px; top:360px"></div>
+    </div>
+  </div>
+
+  <div id="painel">
+    <div class="card">
+      <b>Digite o comando CSS</b>
+      <input id="cmd" placeholder="left | right | top | bottom | center">
+      <button onclick="executar()">Executar</button>
+    </div>
+
+    <div class="card">
+      <b>📋 Colinha CSS</b>
+      <p>left → esquerda</p>
+      <p>right → direita</p>
+      <p>top → sobe</p>
+      <p>bottom → desce</p>
+    </div>
+  </div>
+</div>
+
+<!-- ========= FINAL ========= -->
+<div id="final">
+  <img src="img/zero.png" width="120">
+  <p>Parabéns! Você guiou o Zero até a estrela ⭐</p>
+  <button onclick="proxima()">Próxima fase ▶</button>
+</div>
+
+<script>
+/* ========= DIÁLOGO ========= */
+const falas = [
+  "Ufa... finalmente saí do labirinto.",
+  "Mas agora estou em um lugar escuro.",
+  "Vou precisar usar CSS para me mover.",
+  "Use left, right, top e bottom.",
+  "Cuidado com os obstáculos!",
+  "Leve-me até a estrela!"
+];
+
+let i = 0;
+const fala = document.getElementById("fala");
+const btnNext = document.getElementById("next");
+const dialogo = document.getElementById("dialogo");
+const fase = document.getElementById("fase");
+
+fala.innerText = falas[i];
+
+function avancarDialogo(){
+  i++;
+  if(i < falas.length){
+    fala.innerText = falas[i];
+  }else{
+    dialogo.style.display="none";
+    fase.style.display="flex";
+  }
+}
+
+btnNext.onclick = avancarDialogo;
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && dialogo.style.display !== "none") {
+    e.preventDefault();
+    avancarDialogo();
+  }
+});
+
+/* ========= JOGO ========= */
+const zero = document.getElementById("zero");
+const estrela = document.getElementById("estrela");
+const game = document.getElementById("game");
+const obstaculos = document.querySelectorAll(".obstaculo");
+
+const passo = 32;
+
+function executar(){
+  const c = document.getElementById("cmd").value.toLowerCase();
+  let x = zero.offsetLeft;
+  let y = zero.offsetTop;
+
+  if(c==="left") x -= passo;
+  if(c==="right") x += passo;
+  if(c==="top") y -= passo;
+  if(c==="bottom") y += passo;
+  if(c==="center"){
+    x = (game.clientWidth - zero.clientWidth)/2;
+    y = (game.clientHeight - zero.clientHeight)/2;
+  }
+
+  /* LIMITES */
+  x = Math.max(0, Math.min(x, game.clientWidth - zero.clientWidth));
+  y = Math.max(0, Math.min(y, game.clientHeight - zero.clientHeight));
+
+  /* COLISÃO */
+  const futuro = {l:x, t:y, r:x+48, b:y+48};
+  for(let obs of obstaculos){
+    const o = obs.getBoundingClientRect();
+    const g = game.getBoundingClientRect();
+    const ob = {
+      l:o.left-g.left,
+      r:o.right-g.left,
+      t:o.top-g.top,
+      b:o.bottom-g.top
+    };
+    if(futuro.r>ob.l && futuro.l<ob.r && futuro.b>ob.t && futuro.t<ob.b){
+      return;
+    }
+  }
+
+  zero.style.left = x+"px";
+  zero.style.top = y+"px";
+
+  checarVitoria();
+}
+
+function checarVitoria(){
+  const z = zero.getBoundingClientRect();
+  const e = estrela.getBoundingClientRect();
+  if(
+    z.right > e.left &&
+    z.left < e.right &&
+    z.bottom > e.top &&
+    z.top < e.bottom
+  ){
+    document.getElementById("fase").style.display="none";
+    document.getElementById("final").style.display="flex";
+  }
+}
+
+function proxima(){
+  document.body.style.opacity="0";
+  setTimeout(()=>location.href="fase7.html",800);
+}
+</script>
+
+</body>
+</html>

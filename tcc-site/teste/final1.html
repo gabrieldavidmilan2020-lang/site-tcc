@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Missão HTML - Zero</title>
+    <link rel="stylesheet" href="final1.css">
+</head>
+<body>
+
+    <div id="intro">
+        <div class="personagem">
+            🤖 ZERO
+        </div>
+
+        <div class="balao">
+            Olá Programador! Eu sou o Zero.
+            <br><br>
+            Um vírus embaralhou todos os códigos HTML da Central Digital.
+            Sua missão é reconectar cada tag ao seu significado correto para restaurar o sistema.
+            <br><br>
+            Pronto para começar?
+        </div>
+
+        <button id="iniciar">INICIAR MISSÃO</button>
+    </div>
+
+    <div id="fase" class="hidden">
+
+        <h1>🔌 Conecte as Tags HTML</h1>
+
+        <div class="game">
+
+            <div class="lado">
+                <button class="tag" data-id="1">&lt;body&gt;</button>
+                <button class="tag" data-id="2">&lt;head&gt;</button>
+                <button class="tag" data-id="3">&lt;title&gt;</button>
+                <button class="tag" data-id="4">&lt;h1&gt;</button>
+            </div>
+
+            <div class="lado">
+                <button class="significado" data-id="3">
+                    Título da aba
+                </button>
+
+                <button class="significado" data-id="1">
+                    Conteúdo visível do site
+                </button>
+
+                <button class="significado" data-id="4">
+                    Título principal
+                </button>
+
+                <button class="significado" data-id="2">
+                    Informações da página
+                </button>
+            </div>
+
+        </div>
+
+        <div id="mensagem"></div>
+
+    </div>
+
+    <script src="final1.js"></script>
+</body>
+</html>

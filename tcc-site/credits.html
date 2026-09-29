@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Fim de Jogo</title>
+
+    <style>
+        /* =========================================================
+           ESTILO GERAL - VISUAL DE JOGO DOS ANOS 90
+        ========================================================= */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            background: #000;
+            color: #fff;
+            font-family: "Courier New", monospace;
+            image-rendering: pixelated;
+        }
+
+        /* Tela principal */
+
+        #game {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            background:
+                radial-gradient(circle at center, #171717 0%, #050505 55%, #000 100%);
+            overflow: hidden;
+        }
+
+        /* Scanlines para dar aparência de TV/arcade antiga */
+
+        #game::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: repeating-linear-gradient(
+                to bottom,
+                rgba(255,255,255,0.025) 0px,
+                rgba(255,255,255,0.025) 1px,
+                transparent 1px,
+                transparent 4px
+            );
+            z-index: 100;
+        }
+
+        /* =========================================================
+           CENAS
+        ========================================================= */
+
+        .scene {
+            position: absolute;
+            inset: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            opacity: 0;
+            visibility: hidden;
+
+            transition:
+                opacity 1s ease,
+                visibility 1s ease;
+
+            z-index: 10;
+        }
+
+        .scene.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* =========================================================
+           CENA 1 - OBRIGADO POR JOGAR
+        ========================================================= */
+
+        #scene1 {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .game-over-text {
+            color: #fff;
+            font-size: clamp(30px, 6vw, 80px);
+            font-weight: bold;
+            letter-spacing: 6px;
+
+            text-shadow:
+                4px 4px 0 #333,
+                0 0 10px #fff,
+                0 0 25px #555;
+
+            animation: textAppear 2s ease forwards,
+                       blink 1.5s infinite alternate;
+        }
+
+        .press-text {
+            margin-top: 40px;
+            color: #777;
+            font-size: clamp(12px, 2vw, 20px);
+            letter-spacing: 3px;
+
+            animation: blink 1s infinite alternate;
+        }
+
+        @keyframes textAppear {
+            from {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes blink {
+            from {
+                opacity: 0.45;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* =========================================================
+           CENA 2 - CRÉDITOS
+        ========================================================= */
+
+        #scene2 {
+            display: block;
+            overflow: hidden;
+        }
+
+        .credits-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+
+            overflow: hidden;
+
+            perspective: 500px;
+        }
+
+        .credits {
+            position: absolute;
+            width: 100%;
+            top: 100%;
+
+            text-align: center;
+
+            color: #fff;
+
+            animation: creditsRoll 35s linear forwards;
+        }
+
+        .credits h1 {
+            font-size: clamp(30px, 5vw, 70px);
+            color: #fff;
+
+            margin-bottom: 80px;
+
+            letter-spacing: 8px;
+
+            text-shadow:
+                4px 4px 0 #333,
+                0 0 15px #fff;
+        }
+
+        .credits h2 {
+            color: #aaa;
+            font-size: clamp(18px, 3vw, 35px);
+
+            margin-top: 50px;
+            margin-bottom: 20px;
+
+            letter-spacing: 4px;
+        }
+
+        .credits p {
+            font-size: clamp(14px, 2vw, 24px);
+            line-height: 2;
+
+            color: #fff;
+
+            text-shadow:
+                2px 2px 0 #222;
+        }
+
+        .credits .special {
+            color: #ffd700;
+
+            font-weight: bold;
+
+            margin-top: 80px;
+            margin-bottom: 80px;
+        }
+
+        @keyframes creditsRoll {
+            from {
+                top: 100%;
+            }
+
+            to {
+                top: -180%;
+            }
+        }
+
+        /* =========================================================
+           CENA 3 - BOTÃO RECOMEÇAR
+        ========================================================= */
+
+        #scene3 {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .final-title {
+            font-size: clamp(30px, 5vw, 60px);
+
+            margin-bottom: 50px;
+
+            color: #fff;
+
+            letter-spacing: 5px;
+
+            text-shadow:
+                4px 4px 0 #333,
+                0 0 15px #fff;
+        }
+
+        .restart-button {
+            position: relative;
+
+            padding: 18px 45px;
+
+            background: #222;
+
+            border: 4px solid #fff;
+
+            color: #fff;
+
+            font-family: "Courier New", monospace;
+            font-size: clamp(16px, 2vw, 25px);
+            font-weight: bold;
+
+            letter-spacing: 3px;
+
+            cursor: pointer;
+
+            box-shadow:
+                6px 6px 0 #555;
+
+            transition: all 0.1s linear;
+        }
+
+        .restart-button:hover {
+            background: #fff;
+            color: #000;
+
+            border-color: #fff;
+
+            box-shadow:
+                6px 6px 0 #aaa;
+
+            transform: translate(-2px, -2px);
+        }
+
+        .restart-button:active {
+            transform: translate(4px, 4px);
+
+            box-shadow:
+                2px 2px 0 #555;
+        }
+
+        /* =========================================================
+           EFEITO DE FLICKER
+        ========================================================= */
+
+        .flicker {
+            animation: flicker 0.15s infinite alternate;
+        }
+
+        @keyframes flicker {
+            from {
+                opacity: 0.95;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* =========================================================
+           PEQUENAS ESTRELAS/PIXELS NO FUNDO
+        ========================================================= */
+
+        .pixel {
+            position: absolute;
+
+            width: 3px;
+            height: 3px;
+
+            background: #fff;
+
+            opacity: 0.5;
+
+            animation: starMove linear infinite;
+        }
+
+        @keyframes starMove {
+            from {
+                transform: translateY(0);
+            }
+
+            to {
+                transform: translateY(100vh);
+            }
+        }
+
+        /* =========================================================
+           RESPONSIVIDADE
+        ========================================================= */
+
+        @media (max-width: 600px) {
+
+            .game-over-text {
+                letter-spacing: 3px;
+            }
+
+            .credits h1 {
+                letter-spacing: 4px;
+            }
+
+            .restart-button {
+                padding: 15px 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="game">
+
+        <!-- =====================================================
+             PIXELS DE FUNDO
+        ====================================================== -->
+
+        <div class="pixel" style="left: 10%; top: 5%; animation-duration: 7s;"></div>
+        <div class="pixel" style="left: 25%; top: 20%; animation-duration: 9s;"></div>
+        <div class="pixel" style="left: 40%; top: 10%; animation-duration: 6s;"></div>
+        <div class="pixel" style="left: 60%; top: 30%; animation-duration: 8s;"></div>
+        <div class="pixel" style="left: 75%; top: 15%; animation-duration: 10s;"></div>
+        <div class="pixel" style="left: 90%; top: 25%; animation-duration: 7s;"></div>
+        <div class="pixel" style="left: 50%; top: 40%; animation-duration: 11s;"></div>
+
+
+        <!-- =====================================================
+             CENA 1
+        ====================================================== -->
+
+        <section id="scene1" class="scene active">
+
+            <div class="game-over-text">
+                OBRIGADO POR JOGAR
+            </div>
+
+            <div class="press-text">
+                PREPARE-SE PARA OS CRÉDITOS...
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             CENA 2 - CRÉDITOS
+        ====================================================== -->
+
+        <section id="scene2" class="scene">
+
+            <div class="credits-container">
+
+                <div class="credits">
+
+                    <h1>CRÉDITOS</h1>
+
+                    <h2>DESENVOLVIMENTO</h2>
+                    <p>Gabriel David milan<br>Gustavo Araujo<br>Yuri Marques.
+                    </p>
+                    <p>SUA EMPRESA</p>
+
+                    <h2>PROGRAMAÇÃO</h2>
+                    <p>Gabriel David milan</p>
+
+                    <h2>ARTE</h2>
+                    <p>Gustavo Araujo</p>
+
+                    <h2>MÚSICA</h2>
+                    <p>SEU NOME</p>
+
+                    <h2>EFEITOS SONOROS</h2>
+                    <p>Yuri Marques</p>
+
+                    <h2>DESIGN</h2>
+                    <p>SGabriel David milan</p>
+
+                    <h2>AGRADECIMENTOS ESPECIAIS</h2>
+
+                    <p>
+                        A TODOS QUE JOGARAM
+                    </p>
+
+                    <p>
+                        A TODOS QUE APOIARAM O PROJETO
+                    </p>
+
+                    <p>
+                        E A VOCÊ
+                    </p>
+
+                    <p>
+                        POR CHEGAR ATÉ AQUI
+                    </p>
+
+                    <p class="special">
+                        VOCÊ É O VERDADEIRO HERÓI!
+                    </p>
+
+                    <h1>FIM</h1>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             CENA 3
+        ====================================================== -->
+
+        <section id="scene3" class="scene">
+
+            <div class="final-title">
+                FIM DE JOGO
+            </div>
+
+            <button
+                class="restart-button"
+                onclick="restartGame()">
+
+                ▶ RECOMEÇAR JOGO
+
+            </button>
+
+        </section>
+
+    </div>
+
+
+    <script>
+
+        /* =========================================================
+           CONFIGURAÇÕES
+        ========================================================= */
+
+        const scene1Duration = 5000;
+
+        /*
+            Tempo dos créditos em milissegundos.
+
+            A animação CSS dura 35 segundos.
+            Aqui usamos aproximadamente 37 segundos para garantir
+            que os créditos terminem antes da próxima cena.
+        */
+
+        const creditsDuration = 37000;
+
+
+        /* =========================================================
+           ELEMENTOS
+        ========================================================= */
+
+        const scene1 = document.getElementById("scene1");
+        const scene2 = document.getElementById("scene2");
+        const scene3 = document.getElementById("scene3");
+
+
+        /* =========================================================
+           FUNÇÃO PARA TROCAR DE CENA
+        ========================================================= */
+
+        function changeScene(sceneToShow) {
+
+            document.querySelectorAll(".scene").forEach(scene => {
+                scene.classList.remove("active");
+            });
+
+            sceneToShow.classList.add("active");
+        }
+
+
+        /* =========================================================
+           INÍCIO DO FINAL DO JOGO
+        ========================================================= */
+
+        setTimeout(() => {
+
+            changeScene(scene2);
+
+            /*
+                Depois que a cena dos créditos começar,
+                esperamos os créditos terminarem.
+            */
+
+            setTimeout(() => {
+
+                changeScene(scene3);
+
+            }, creditsDuration);
+
+        }, scene1Duration);
+
+
+        /* =========================================================
+           BOTÃO RECOMEÇAR
+        ========================================================= */
+
+        function restartGame() {
+
+            /*
+                Redireciona para o index.html.
+
+                O index.html deve estar na mesma pasta
+                deste arquivo.
+            */
+
+            window.location.href = "index.html";
+        }
+
+
+        /* =========================================================
+           TECLA ENTER / ESPAÇO
+        ========================================================= */
+
+        document.addEventListener("keydown", function(event) {
+
+            if (
+                event.key === "Enter" ||
+                event.key === " "
+            ) {
+
+                /*
+                    Se estiver na terceira cena,
+                    permite reiniciar pelo teclado.
+                */
+
+                if (scene3.classList.contains("active")) {
+
+                    restartGame();
+
+                }
+
+            }
+
+        });
+
+    </script>
+
+</body>
+</html>

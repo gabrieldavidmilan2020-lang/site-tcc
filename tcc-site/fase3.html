@@ -1,0 +1,389 @@
+
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Fase 2 - Monte a Estrutura</title>
+
+    <link rel="stylesheet" href="css/fase3.css">
+    <link rel="stylesheet" href="css/fase3-dicas.css">
+
+    <script src="js/fase-ordem.js"></script>
+</head>
+
+<body>
+
+    <!-- =====================================================
+         DIÁLOGO INICIAL
+    ====================================================== -->
+
+    <section id="dialogoInicial" class="dialogo">
+
+        <div class="abertura-personagem">
+            <img src="img/zero.png" alt="Zero">
+            <span>ZERO / GUIA DO SISTEMA</span>
+        </div>
+
+        <div class="balao">
+
+            <span class="etapa-dialogo">
+                PREPARAÇÃO DO PAINEL
+            </span>
+
+            <p id="falaZero"></p>
+
+            <div id="escolhas">
+                <button data-resposta="sim">
+                    SIM, JÁ SEI
+                </button>
+
+                <button data-resposta="nao">
+                    NÃO, EXPLIQUE
+                </button>
+            </div>
+
+            <button id="continuar" class="oculto">
+                CONTINUAR ▶
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         SALA / ÁREA DE MOVIMENTAÇÃO
+    ====================================================== -->
+
+    <main id="sala" class="sala oculto">
+
+        <header class="hud">
+
+            <b>&gt; SYSTEM.HTML</b>
+
+            <span>
+                FASE 03 / PAINEL DE ESTRUTURA
+            </span>
+
+            <span>
+                W A S D MOVER · F INTERAGIR
+            </span>
+
+        </header>
+
+
+        <section class="arena">
+
+            <div id="painelEntrada" class="painel-entrada">
+
+                <b>PAINEL HTML</b>
+
+                <span>
+                    ERRO DE ESTRUTURA
+                </span>
+
+                <i>!</i>
+
+            </div>
+
+
+            <div id="aviso">
+                APROXIME-SE DO PAINEL
+            </div>
+
+
+            <img
+                id="zeroSala"
+                src="img/zero.png"
+                alt="Zero"
+                class="zero-sala"
+            >
+
+        </section>
+
+
+        <section class="missao">
+
+            <b>MISSÃO</b>
+
+            <h1>
+                AJUDE O ZERO A CONSERTAR O PAINEL
+            </h1>
+
+            <p>
+                Caminhe até o painel e aperte F para entrar no sistema.
+            </p>
+
+        </section>
+
+    </main>
+
+
+    <!-- =====================================================
+         DESAFIO — MONTE A ESTRUTURA
+    ====================================================== -->
+
+    <main id="desafio" class="game oculto">
+
+        <!-- PAINEL DO JOGO -->
+
+        <section class="painel-jogo">
+
+            <div class="topo-jogo">
+
+                <div>
+
+                    <span>
+                        FASE 02
+                    </span>
+
+                    <h1>
+                        MONTE A ESTRUTURA
+                    </h1>
+
+                </div>
+
+
+                <div class="vidas">
+
+                    <small>
+                        CHANCES
+                    </small>
+
+                    <div id="vidas">
+                        <span>♥</span>
+                        <span>♥</span>
+                        <span>♥</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- HISTÓRIA -->
+
+            <div class="historia">
+
+                <p>
+                    Zero entrou no painel. Monte a estrutura básica
+                    da página HTML para consertá-lo.
+                </p>
+
+                <p>
+                    Observe a função de cada elemento e pense onde
+                    ele se encaixa. Cada escolha será adicionada ao código.
+                </p>
+
+            </div>
+
+
+            <!-- EDITOR DE CÓDIGO -->
+
+            <div class="codigo-area">
+
+                <div class="codigo-topo">
+
+                    <span>
+                        EDITOR HTML
+                    </span>
+
+                    <span id="contador">
+                        0 / 6
+                    </span>
+
+                </div>
+
+
+                <div id="codigo" class="codigo">
+
+                    <span class="cursor">
+                        _
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- DICA -->
+
+            <div class="barra-dica">
+
+                <button
+                    id="botaoDica"
+                    type="button"
+                    aria-expanded="false"
+                >
+                    💡 DICA
+                </button>
+
+                <p
+                    id="textoDica"
+                    class="texto-dica"
+                    aria-live="polite"
+                >
+                    Sua pista aparece aqui.
+                </p>
+
+            </div>
+
+
+            <!-- MENSAGEM -->
+
+            <div id="mensagem" class="mensagem">
+                Monte o código para continuar...
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             ELEMENTOS DISPONÍVEIS
+        ================================================== -->
+
+        <section class="elementos-area">
+
+            <div class="instrucao">
+
+                <span>
+                    ELEMENTOS DISPONÍVEIS
+                </span>
+
+                <small>
+                    Clique para adicionar ao código
+                </small>
+
+            </div>
+
+
+            <div class="elementos">
+
+                <button
+                    class="elemento"
+                    data-elemento="html"
+                >
+                    &lt;html&gt;
+                </button>
+
+
+                <button
+                    class="elemento"
+                    data-elemento="head"
+                >
+                    &lt;head&gt;
+                </button>
+
+
+                <button
+                    class="elemento"
+                    data-elemento="body"
+                >
+                    &lt;body&gt;
+                </button>
+
+
+                <button
+                    class="elemento"
+                    data-elemento="title"
+                >
+                    &lt;title&gt;
+                </button>
+
+
+                <button
+                    class="elemento"
+                    data-elemento="h1"
+                >
+                    &lt;h1&gt;
+                </button>
+
+
+                <button
+                    class="elemento"
+                    data-elemento="p"
+                >
+                    &lt;p&gt;
+                </button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =====================================================
+         TELA DE ERRO
+    ====================================================== -->
+
+    <div id="erroTela" class="overlay">
+
+        <div class="caixa erro">
+
+            <i>!</i>
+
+            <h2>
+                ESTRUTURA INCORRETA
+            </h2>
+
+            <p id="textoErro"></p>
+
+            <button id="tentarNovamente">
+                CONTINUAR
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         TELA DE VITÓRIA
+    ====================================================== -->
+
+    <div id="vitoriaTela" class="overlay">
+
+        <div class="caixa vitoria">
+
+            <i>★</i>
+
+            <h2>
+                CÓDIGO COMPLETO!
+            </h2>
+
+            <p>
+                Muito bem, Zero! Você montou a estrutura básica
+                de uma página HTML.
+            </p>
+
+            <button id="proximaFase">
+                PRÓXIMA FASE
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         TRANSIÇÃO
+    ====================================================== -->
+
+    <div id="transicao"></div>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script src="js/save.js"></script>
+    <script src="js/fase3.js"></script>
+    <script src="js/mobile-controls.js"></script>
+
+</body>
+
+</html>

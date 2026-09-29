@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Fase 5 - Código em Fuga</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/fase5.css">
+    <link rel="stylesheet" href="css/fases-responsive.css">
+</head>
+<body>
+
+<!-- INTRO -->
+<div id="intro">
+    <img src="img/zero.png" id="intro-zero">
+
+    <div id="speech-bubble">
+        <p id="speech-text"></p>
+        <button id="next-dialog">▶ ▶</button>
+    </div>
+</div>
+
+<!-- LABIRINTO -->
+<canvas id="game" class="hidden" aria-label="Labirinto da fase 5"></canvas>
+<nav id="mobile-controls" class="mobile-controls hidden" aria-label="Controles de movimento">
+  <button type="button" data-direction="w" aria-label="Mover para cima">?</button>
+  <button type="button" data-direction="a" aria-label="Mover para a esquerda">?</button>
+  <button type="button" data-direction="s" aria-label="Mover para baixo">?</button>
+  <button type="button" data-direction="d" aria-label="Mover para a direita">?</button>
+</nav>
+
+<!-- FINAL -->
+<div id="end" class="hidden">
+    <div id="final-box">
+        <img src="img/zero.png" id="final-zero">
+
+        <div class="speech-bubble">
+            <p>Zero: Muito obrigado! Você conseguiu sair! 🎉</p>
+            <button id="proximaFase">Próxima fase ▶</button>
+        </div>
+    </div>
+</div>
+
+<script src="js/save.js"></script>
+<script src="js/historia-fases.js"></script>
+<script src="js/fase5.js"></script>
+</body>
+</html>

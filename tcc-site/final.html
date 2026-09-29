@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Fase Final</title>
+  <link rel="stylesheet" href="css/final.css">
+  <link rel="stylesheet" href="css/final-improved.css">
+</head>
+<body>
+
+<!-- ================= CUTSCENE ================= -->
+<div id="cutscene">
+  <div id="dialogo-box">
+    <img id="retrato">
+    <div id="texto-box">
+      <p id="texto"></p>
+      <button onclick="proximo()">▶</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= JOGO ================= -->
+<div id="game">
+  <aside id="hud" aria-live="polite">
+    <strong>MISSÃO FINAL</strong>
+    <span id="progressoPaineis">PAINÉIS: 0 / 6</span>
+    <span>W A S D: mover · F: interagir · E: defender · clique: poder</span>
+  </aside>
+
+  <!-- BARRA DE VIDA DO CHEFÃO -->
+  <div id="bossVidaContainer">
+    <div id="bossVidaBar"></div>
+    <span id="bossVidaTexto">CHEFÃO: 100 / 100</span>
+  </div>
+
+  <!-- GAME OVER -->
+  <div id="gameover" style="display: none;">
+    <h1>GAME OVER</h1>
+    <p>Você perdeu todas as vidas!</p>
+    <div style="margin: 20px 0;">
+      <button id="btnRecomecar" style="margin-right: 10px; padding: 10px 20px; background: lime; color: black; border: none; cursor: pointer; font-weight: bold;">Recomeçar fase</button>
+      <button onclick="location.reload()" style="padding: 10px 20px; background: red; color: white; border: none; cursor: pointer; font-weight: bold;">Tentar Novamente</button>
+    </div>
+  </div>
+
+  <!-- MENSAGEM DE ERRO -->
+  <div id="mensagemErro" style="display: none;"></div>
+
+  <!-- MAPA GRANDE -->
+  <div id="mapa">
+
+    <!-- VIDA ACIMA DO PLAYER -->
+    <div id="vida"></div>
+
+    <!-- PLAYER -->
+    <div id="player"></div>
+
+    <!-- BOSS -->
+    <div id="boss"></div>
+
+    <!-- 6 PAINÉIS -->
+    <div class="painel" style="left:150px; top:180px;">
+      <div class="seta">⬇ CLIQUE</div>
+    </div>
+
+    <div class="painel" style="left:650px; top:320px;">
+      <div class="seta">⬇ CLIQUE</div>
+    </div>
+
+    <div class="painel" style="left:1100px; top:120px;">
+      <div class="seta">⬇ CLIQUE</div>
+    </div>
+
+    <div class="painel" style="left:1650px; top:520px;">
+      <div class="seta">⬇ CLIQUE</div>
+    </div>
+
+    <div class="painel" style="left:2150px; top:260px;">
+      <div class="seta">⬇ CLIQUE</div>
+    </div>
+
+    <div class="painel" style="left:2550px; top:450px;">
+      <div class="seta">⬇ CLIQUE</div>
+    </div>
+
+    <!-- PORTA FINAL -->
+    <div id="porta" style="cursor: pointer;"></div>
+
+    <!-- PAINEL FINAL (6º PAINEL) -->
+    <div class="painel" id="painelFinal" style="left: 2600px; top: 500px;">
+      <div class="seta">⬇ CLIQUE</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ================= PUZZLE ================= -->
+<div id="puzzle" style="display: none;">
+  <div style="background: rgba(0,0,0,0.9); padding: 30px; border: 3px solid lime; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; width: 500px;">
+    <h3 style="color: lime; margin-top: 0;">🔧 PAINEL DE REPARO</h3>
+    <p style="color: lime; font-size: 16px; margin-bottom: 10px;">Este código HTML está com erro. Corrija-o:</p>
+    <div style="background: black; padding: 15px; border: 2px solid yellow; margin: 10px 0; font-family: monospace; color: yellow;">
+      <code id="codigo"></code>
+    </div>
+    <p style="color: white; font-size: 14px; margin: 5px 0;">Digite o código corrigido:</p>
+    <textarea id="resposta" style="width: 100%; height: 80px; margin: 10px 0; padding: 10px; font-family: monospace; background: black; color: lime; border: 1px solid lime;"></textarea>
+    <div style="text-align: center; margin-top: 20px;">
+      <button class="btn-corrigir" type="button" style="margin-right: 10px; padding: 10px 20px; background: lime; color: black; border: none; cursor: pointer; font-weight: bold;">✅ Corrigir</button>
+      <button class="btn-sair" type="button" style="padding: 10px 20px; background: red; color: white; border: none; cursor: pointer; font-weight: bold;">❌ Sair</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/save.js"></script>
+<script src="js/historia-fases.js"></script>
+<script src="js/final-improved.js"></script>
+<script src="js/mobile-controls.js"></script>
+</body>
+</html>

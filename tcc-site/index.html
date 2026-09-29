@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mundo Virtual da Programação</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+.hidden { display: none !important; }
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+.modal-content {
+  background: #101820;
+  color: #d4ff8f;
+  border: 2px solid #00ff88;
+  padding: 24px;
+  width: min(420px, 90%);
+  box-shadow: 0 0 30px rgba(0,255,136,0.3);
+}
+.modal-content input {
+  width: 100%;
+  margin: 8px 0 14px;
+  padding: 10px;
+  background: #111;
+  color: #d4ff8f;
+  border: 1px solid #00ff88;
+}
+.modal-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10p
+}
+.modal-buttons button,
+.close-modal {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+.user-panel {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 10000;
+}
+
+.user-info {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: rgba(0, 0, 0, 0.85);
+  border: 2px solid #00ff88;
+  border-radius: 999px;
+  color: #00ff88;
+  cursor: pointer;
+  user-select: none;
+  box-shadow: 0 0 20px rgba(0, 255, 136, 0.25);
+}
+
+.user-icon {
+  font-size: 1.1rem;
+}
+
+.user-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 180px;
+  padding: 10px;
+  background: #101820;
+  border: 1px solid #00ff88;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0, 255, 136, 0.25);
+}
+
+.user-menu.hidden {
+  display: none;
+}
+
+.user-menu button {
+  width: 100%;
+  padding: 10px 12px;
+  border: none;
+  background: transparent;
+  color: #00ff88;
+  text-align: left;
+  cursor: pointer;
+}
+
+.user-menu button:hover {
+  background: rgba(0, 255, 136, 0.12);
+}
+.close-modal {
+  margin-top: 8px;
+  background: #ff4c4c;
+  color: white;
+}
+.accent {
+  background: #00ff88;
+  color: black;
+}
+</style>
+</head>
+<body>
+
+<canvas id="bg"></canvas>
+
+<div class="content">
+    <h1>Bem-vindo ao Mundo Virtual da Programação</h1>
+    <p>Prepare-se para iniciar sua jornada como desenvolvedor.</p>
+    <button id="startBtn">Iniciar Missão</button>
+    <button id="continueBtn">Continuar</button>
+  </div>
+
+  <div class="user-panel">
+    <div class="user-info hidden" id="userInfo">
+      <span class="user-icon">👤</span>
+      <span class="user-name" id="userNameLabel">Nenhum usuário conectado</span>
+    </div>
+    <div class="user-menu hidden" id="userMenu">
+      <button id="changeUserBtn">Trocar de usuário</button>
+    </div>
+    <button id="loginBtn">Entrar / Cadastrar</button>
+  </div>
+
+<div id="loginModal" class="modal hidden">
+  <div class="modal-content">
+    <h2>Login / Cadastro</h2>
+    <p id="loginFeedback" style="color: #f88; min-height: 18px;"></p>
+    <label>Usuário</label>
+    <input id="loginUser" type="text" placeholder="Digite seu usuário">
+    <label>Senha</label>
+    <input id="loginPass" type="password" placeholder="Digite sua senha">
+    <div class="modal-buttons">
+      <button id="btnLogin" class="accent">Entrar</button>
+      <button id="btnRegister">Cadastrar</button>
+    </div>
+    <button id="btnCloseModal" class="close-modal">Fechar</button>
+  </div>
+</div>
+
+<script src="js/save.js"></script>
+<script>
+/* ===============================
+   CANVAS FUNDO ANIMADO
+================================ */
+const canvas = document.getElementById("bg");
+const ctx = canvas.getContext("2d");
+
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+resizeCanvas();
+
+let particlesArray = [];
+const mouse = { x: 0, y: 0 };
+
+window.addEventListener("mousemove", e => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+});
+
+/* ===============================
+   CLASSE PARTICULA
+================================ */
+class Particle {
+    constructor() {
+        this.size = Math.random() * 3 + 1;
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.speedX = (Math.random() - 0.5) * 2;
+        this.speedY = (Math.random() - 0.5) * 2;
+    }
+
+    update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+
+        const dx = mouse.x - this.x;
+        const dy = mouse.y - this.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        if (dist < 100) {
+            this.x -= dx / 20;
+            this.y -= dy / 20;
+        }
+
+        if (this.x <= 0 || this.x >= canvas.width) this.speedX *= -1;
+        if (this.y <= 0 || this.y >= canvas.height) this.speedY *= -1;
+    }
+
+    draw() {
+        ctx.fillStyle = "#00ff88";
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+    }
+}
+
+/* ===============================
+   INICIAR PARTICULAS
+================================ */
+function initParticles() {
+    particlesArray = [];
+    for (let i = 0; i < 120; i++) {
+        particlesArray.push(new Particle());
+    }
+}
+
+/* ===============================
+   ANIMAÇÃO
+================================ */
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particlesArray.forEach(p => {
+        p.update();
+        p.draw();
+    });
+    requestAnimationFrame(animate);
+}
+
+/* ===============================
+   BOTÕES (LÓGICA CERTA)
+================================ */
+
+const loginModal = document.getElementById("loginModal");
+const userInfo = document.getElementById("userInfo");
+const userNameLabel = document.getElementById("userNameLabel");
+const userMenu = document.getElementById("userMenu");
+const loginBtn = document.getElementById("loginBtn");
+const btnLogin = document.getElementById("btnLogin");
+const btnRegister = document.getElementById("btnRegister");
+const btnCloseModal = document.getElementById("btnCloseModal");
+const loginUserInput = document.getElementById("loginUser");
+const loginPass = document.getElementById("loginPass");
+const loginFeedback = document.getElementById("loginFeedback");
+const changeUserBtn = document.getElementById("changeUserBtn");
+let pendingAction = null;
+
+function renderUserState() {
+    const user = SaveSystem.getCurrentUser();
+    if (user) {
+        userInfo.classList.remove("hidden");
+        userNameLabel.textContent = user;
+        loginBtn.style.display = "none";
+        userMenu.classList.add("hidden");
+    } else {
+        userInfo.classList.add("hidden");
+        userNameLabel.textContent = "Nenhum usuário conectado";
+        loginBtn.style.display = "inline-block";
+        userMenu.classList.add("hidden");
+    }
+}
+
+function showLoginModal(action) {
+    pendingAction = action;
+    loginFeedback.textContent = "";
+    loginUserInput.value = "";
+    loginPass.value = "";
+    loginModal.classList.remove("hidden");
+}
+
+function closeLoginModal() {
+    loginModal.classList.add("hidden");
+}
+
+loginBtn.addEventListener("click", () => showLoginModal(null));
+userInfo.addEventListener("click", () => {
+    if (SaveSystem.getCurrentUser()) {
+        userMenu.classList.toggle("hidden");
+    }
+});
+changeUserBtn.addEventListener("click", () => {
+    SaveSystem.logoutUser();
+    renderUserState();
+    showLoginModal("switch");
+});
+
+btnCloseModal.addEventListener("click", closeLoginModal);
+
+btnLogin.addEventListener("click", async () => {
+    const result = await SaveSystem.loginUser(loginUserInput.value, loginPass.value);
+    if (!result.success) {
+        loginFeedback.textContent = result.message;
+        return;
+    }
+    renderUserState();
+    closeLoginModal();
+    const action = pendingAction;
+    pendingAction = null;
+    if (action === "start" || action === "switch") {
+        await SaveSystem.updateActivePhase(1);
+        window.location.href = "fase1.html";
+        return;
+    }
+    if (action === "continue") {
+        const fase = await SaveSystem.getActivePhase();
+        window.location.href = `fase${fase}.html`;
+        return;
+    }
+    const fase = (result.data && result.data.faseAtual) ? result.data.faseAtual : await SaveSystem.getActivePhase();
+    await SaveSystem.updateActivePhase(fase);
+    window.location.href = `fase${fase}.html`;
+});
+
+btnRegister.addEventListener("click", async () => {
+    const result = await SaveSystem.registerUser(loginUserInput.value, loginPass.value);
+    if (!result.success) {
+        loginFeedback.textContent = result.message;
+        return;
+    }
+    renderUserState();
+    closeLoginModal();
+    await SaveSystem.updateActivePhase(1);
+    window.location.href = `fase1.html`;
+});
+
+// 🔴 INICIAR MISSÃO = NOVO JOGO (SEMPRE FASE 1)
+document.getElementById("startBtn").addEventListener("click", async () => {
+    if (!SaveSystem.getCurrentUser()) {
+        showLoginModal("start");
+        return;
+    }
+    await SaveSystem.updateActivePhase(1);
+    window.location.href = "fase1.html";
+});
+
+// 🟢 CONTINUAR = TAMBÉM VAI PARA FASE 1 (SEMPRE COMEÇAR DO INÍCIO)
+document.getElementById("continueBtn").addEventListener("click", async () => {
+    if (!SaveSystem.getCurrentUser()) {
+        showLoginModal("continue");
+        return;
+    }
+    const fase = await SaveSystem.getActivePhase();
+    window.location.href = `fase${fase}.html`;
+});
+
+/* ===============================
+   RESIZE
+================================ */
+window.addEventListener("resize", () => {
+    resizeCanvas();
+    initParticles();
+});
+
+/* ===============================
+   START
+================================ */
+renderUserState();
+initParticles();
+animate();
+</script>
+
+</body>
+</html>
